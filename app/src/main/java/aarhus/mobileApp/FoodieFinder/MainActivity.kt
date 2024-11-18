@@ -14,6 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 
 class MainActivity : ComponentActivity() {
+    private val apiKey = "aaa ${BuildConfig.FOURSQUARE_API_KEY}"
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
