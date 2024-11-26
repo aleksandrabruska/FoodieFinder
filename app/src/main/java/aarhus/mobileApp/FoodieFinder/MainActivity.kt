@@ -2,6 +2,7 @@ package aarhus.mobileApp.FoodieFinder
 
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
+import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetails
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,7 +29,7 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
-
+import com.google.firebase.firestore.FirebaseFirestore;
 
 class MainActivity : ComponentActivity() {
     /*public val apiKey = "${BuildConfig.FOURSQUARE_API_KEY}"
@@ -55,7 +56,8 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            RestaurantDetails()
+                            //RestaurantDetails()
+                            Users()
                         }
                 }
             }

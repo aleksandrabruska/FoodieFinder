@@ -1,9 +1,12 @@
 plugins {
+    id("com.google.gms.google-services")
+
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.secrets)
+
 }
 secrets {
     propertiesFileName = "secrets.properties"
@@ -64,6 +67,7 @@ android {
 
 val ktor_version: String by project
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 
     implementation(libs.ktor.client.serialization.kotlinx.json)
     implementation(libs.ktor.client.serialization)
@@ -80,6 +84,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

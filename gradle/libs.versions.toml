@@ -12,6 +12,10 @@ ktor = "3.0.0"
 kotlinSerialization="2.0.21"
 kotlinxSer="1.7.3"
 googleSecrets="2.0.1"
+googleGms = "4.4.2"
+googlefirebase = "33.5.1"
+googleplayserviceauth = "21.2.0"
+firebaseFirestoreKtx = "25.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +40,7 @@ ktor-client-logging={group="io.ktor",name="ktor-client-logging",version.ref="kto
 ktor-client-android={group="io.ktor",name="ktor-client-android",version.ref="ktor"}
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-serialization-kotlinx-json={group="io.ktor",name="ktor-serialization-kotlinx-json",version.ref="ktor"}
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 #KTOR-END
 
 [plugins]
