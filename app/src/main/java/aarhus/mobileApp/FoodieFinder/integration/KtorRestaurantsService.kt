@@ -19,6 +19,9 @@ import io.ktor.serialization.kotlinx.json.json
 
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
+import org.json.JSONObject
 
 class KtorRestaurantsService : RestaurantsService {
     companion object {
@@ -69,13 +72,26 @@ class KtorRestaurantsService : RestaurantsService {
             "key" to apiKey
         )
         return try {
-            client.get(BASE_URL) {
+            val response: HttpResponse = client.get(BASE_URL) {
                 url {
                     queryParams.forEach { (key, value) ->
                         parameters.append(key, value)
                     }
                 }
-            }.body()
+            }
+
+            val result : JSONObject = JSONObject(response.bodyAsText()).getJSONObject("result")
+            //Log.v("sth", aa.toString())
+            //val bb = aa.getJSONObject("result")
+            //Log.v("bb", bb.toString())
+
+            val jsonParser = Json {
+                ignoreUnknownKeys = true // Default behavior: ignore extra keys
+            }
+            val restaurant: Restaurant = jsonParser.decodeFromString(result.toString())
+            restaurant
+
+
         } catch (e: Exception) {
             Log.v("RESTAURANT SERVICE", e.toString())
             null
