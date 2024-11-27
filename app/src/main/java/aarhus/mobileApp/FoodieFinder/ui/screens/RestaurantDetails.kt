@@ -8,4 +8,5 @@ import androidx.compose.runtime.Composable
 fun RestaurantDetails() {
     RestaurantDetailsBox("aa")
 
+
 }

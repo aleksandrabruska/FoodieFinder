@@ -2,7 +2,10 @@ package aarhus.mobileApp.FoodieFinder.integration
 
 import aarhus.mobileApp.FoodieFinder.BuildConfig
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.ImageView
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
@@ -21,11 +24,17 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.readBytes
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.max
 
 class KtorRestaurantsService : RestaurantsService {
     companion object {
         private const val BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json"
+        private const val PHOTOS_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo"
     }
 
     private val client = HttpClient(Android) {
@@ -81,14 +90,32 @@ class KtorRestaurantsService : RestaurantsService {
             }
 
             val result : JSONObject = JSONObject(response.bodyAsText()).getJSONObject("result")
-            //Log.v("sth", aa.toString())
-            //val bb = aa.getJSONObject("result")
-            //Log.v("bb", bb.toString())
+            Log.v("Hi", "hi")
+
+            Log.v("Prices", result.getInt("price_level").toString())
+            Log.v("Website", result.getString("website"))
+            Log.v("Open:", result.getJSONObject("opening_hours").getJSONArray("weekday_text").getString(0))
+
+            val opened = Array<String>(7, {""})
+            val openedInfo = result.getJSONObject("opening_hours").getJSONArray("weekday_text")
+            for(i in 0..max(openedInfo.length(),opened.size)-1){
+                opened[i] = openedInfo.getString(i)
+            }
+            val photos: JSONArray = result.getJSONArray("photos")
+            //Log.v("photos?", result.getJSONArray("photos").toString())
+            Log.v("photo count: ", photos.length().toString())
+            Log.v("photo", photos[0].toString())
+            val photo: JSONObject = photos.getJSONObject(0)
+            val reference = photo.getString("photo_reference")
+            Log.v("reference", reference)
+
 
             val jsonParser = Json {
                 ignoreUnknownKeys = true // Default behavior: ignore extra keys
             }
             val restaurant: Restaurant = jsonParser.decodeFromString(result.toString())
+            restaurant.openingHours = opened
+            restaurant.photoReference = reference
             restaurant
 
 

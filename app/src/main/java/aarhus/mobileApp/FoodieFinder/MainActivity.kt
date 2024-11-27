@@ -16,8 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.rememberCoroutineScope
 import io.ktor.client.HttpClient
 import kotlinx.serialization.SerialName
 import io.ktor.client.engine.cio.*
@@ -30,6 +33,7 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.firebase.firestore.FirebaseFirestore;
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     /*public val apiKey = "${BuildConfig.FOURSQUARE_API_KEY}"
@@ -40,6 +44,7 @@ class MainActivity : ComponentActivity() {
     }*/
 
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         //Log.v("api", apiKey)
         //runBlocking {
@@ -48,6 +53,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val scope = rememberCoroutineScope()
+
+            scope.launch {
+                val intent = Intent(this@MainActivity, MapsActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                //startActivity(intent)
+            }
+
             FoodieFinderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize())
                     { innerPadding ->
@@ -56,8 +69,9 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            //RestaurantDetails()
-                            Users()
+                            RestaurantDetails()
+
+                            //Users()
                         }
                 }
             }

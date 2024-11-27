@@ -1,11 +1,13 @@
 plugins {
-    id("com.google.gms.google-services")
+  //  id("com.google.gms.google-services")
+
 
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.secrets)
+    alias(libs.plugins.google.gms.services)
 
 }
 secrets {
@@ -67,6 +69,14 @@ android {
 
 val ktor_version: String by project
 dependencies {
+    implementation(libs.coil.kt)
+    //MAPS
+    implementation(libs.google.maps.compose)
+    implementation(libs.google.gms.play.services.location)
+    implementation(libs.google.play.services.maps)
+    // NAVIGATION
+    implementation(libs.androidx.navigation)
+
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 
     implementation(libs.ktor.client.serialization.kotlinx.json)

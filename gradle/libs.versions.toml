@@ -16,8 +16,22 @@ googleGms = "4.4.2"
 googlefirebase = "33.5.1"
 googleplayserviceauth = "21.2.0"
 firebaseFirestoreKtx = "25.1.1"
-
+navigation="2.8.3"
+googleMapsCompose="4.1.1"
+googleplayservicelocation = "21.3.0"
+googleplayservicemaps="19.0.0"
+coilVersion="2.6.0"
 [libraries]
+
+coil-kt={group="io.coil-kt",name="coil-compose",version.ref="coilVersion"}
+#MAPS
+google-maps-compose={group="com.google.maps.android",name="maps-compose",version.ref="googleMapsCompose"}
+google-gms-play-services-location={group="com.google.android.gms",name="play-services-location",version.ref="googleplayservicelocation"}
+google-play-services-maps={group="com.google.android.gms",name="play-services-maps",version.ref="googleplayservicemaps"}
+
+#NAVIGATION
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -43,9 +57,11 @@ ktor-client-serialization-kotlinx-json={group="io.ktor",name="ktor-serialization
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 #KTOR-END
 
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 google-secrets = {id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleSecrets"}
+google-gms-services = { id = "com.google.gms.google-services", version.ref = "googleGms" }
