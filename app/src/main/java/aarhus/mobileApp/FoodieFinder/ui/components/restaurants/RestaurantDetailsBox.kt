@@ -44,92 +44,35 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun RestaurantDetailsBox(id: String) {
-    val restaurantsService = remember { KtorRestaurantsService() }
-    val restaurant = remember { mutableStateOf<Restaurant?>(null) }
-    val isLoading = remember { mutableStateOf(true) }
-    //val restaurantPhoto = remember { mutableStateOf<Bitmap?>(null) }
-//TODO - add loading
+fun RestaurantDetailsBox(restaurant_: Restaurant?) {
 
-    LaunchedEffect(Unit) {
-        isLoading.value = true
-        restaurant.value =
-            restaurantsService.get("ChIJFVWAmflYwokRdnX3IwqbR20")
-        //restaurantPhoto.value =
-        //    restaurantsService.getPhoto()
-        Log.v("Value changed to ", restaurant.value?.id?.let {it} ?: "Null")
-        isLoading.value = false
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            restaurantsService.close()
+    val restaurant = remember { mutableStateOf<Restaurant?>(restaurant_) }
+    Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(restaurant.value?.summary?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(restaurant.value?.address?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("Rating " + (restaurant.value?.rating?.let { it.toString() } ?: "None")
+                + " based on " + (restaurant.value?.ratingsNumber?.let { it.toString() } ?: "None")
+                + " reviews", textAlign = TextAlign.Center, fontSize = 18.sp)
+        var stars = ""
+        for (i in 1..(restaurant.value?.price_level?.let{it} ?: 1)){
+            stars +="*"
         }
-    }
-
-
-    OutlinedCard(modifier = Modifier.padding(10.dp), colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-    ),
-    border = BorderStroke(1.dp, Color.Black),){
-        if(!isLoading.value) {
-                if (restaurant.value != null) {
-
-
-                    val photoUrl = "https://maps.googleapis.com/maps/api/place/photo" +
-                            "?photoreference=${restaurant.value?.photoReference}" +
-                            "&maxwidth=400" +
-                            "&key=${BuildConfig.GOOGLE_MAPS_API_KEY}"
-
-                    // Use SubcomposeAsyncImage to fetch and display the image
-                    Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        Text(restaurant.value?.name?.let { it } ?: "None", fontSize = 40.sp, textAlign = TextAlign.Center)
-
-                        SubcomposeAsyncImage(
-                            model = photoUrl,
-                            contentDescription = "Place Photo",
-                            error = {
-                                Text("Failed to load image") // Show an error message if the image fails to load
-                            },
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(20.dp)
-
-                                .aspectRatio(1f) // Keep a square aspect ratio for the image
-                        )
-
-
-                        //val currentRestaurant : Restaurant = restaurant.value?:Restaurant("","",0,0,"")
-
-
-                        Text(restaurant.value?.address?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Text("Rating " + (restaurant.value?.rating?.let { it.toString() } ?: "None")
-                                + " based on " + (restaurant.value?.ratingsNumber?.let { it.toString() } ?: "None")
-                                + " reviews", textAlign = TextAlign.Center, fontSize = 18.sp)
-                        var stars = ""
-                        for (i in 1..(restaurant.value?.price_level?.let{it} ?: 1)){
-                            stars +="*"
-                        }
-
-                        Text("Price level: " + stars, fontSize = 18.sp)
-
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Text("Opening hours", textAlign = TextAlign.Center, fontSize = 18.sp)
-                        for(i in 1..< (restaurant.value?.openingHours?.size ?: 0)){
-                            Text(restaurant.value?.openingHours?.elementAt(i).let { it.toString() } ?: "None", textAlign = TextAlign.Center, fontSize = 18.sp)
-                        }
-
-
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Text("Find more information on " + restaurant.value?.website?.let { it.toString() } ?: "None", textAlign = TextAlign.Center, fontSize = 15.sp)
-
-                    }
-                }
-
+        Text("Price level: " + stars, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("Opening hours", textAlign = TextAlign.Center, fontSize = 18.sp)
+        for(i in 1..< (restaurant.value?.openingHours?.size ?: 0)){
+            Text(restaurant.value?.openingHours?.elementAt(i).let { it.toString() } ?: "None", textAlign = TextAlign.Center, fontSize = 18.sp)
         }
 
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("Find more information on " + restaurant.value?.website?.let { it.toString() } ?: "None", textAlign = TextAlign.Center, fontSize = 15.sp)
     }
 
 }
+
+
+
+
+

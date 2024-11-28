@@ -11,10 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.LatLng
 
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
-fun Map() {
+fun Map(lat: Double, lng: Double) {
     val context = LocalContext.current
     val granted = remember{
         mutableStateOf(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
@@ -33,5 +34,5 @@ fun Map() {
             launcher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
     }
-    MapView()
+    MapView(LatLng(lat, lng))
 }

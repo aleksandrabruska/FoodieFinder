@@ -17,12 +17,14 @@ class MapsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val lat = intent.getDoubleExtra("restaurant_lat", 0.0)
+        val lng = intent.getDoubleExtra("restaurant_lng", 0.0)
         setContent {
             FoodieFinderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize())
                 { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        Map()
+                        Map(lat, lng)
                     }
                 }
             }

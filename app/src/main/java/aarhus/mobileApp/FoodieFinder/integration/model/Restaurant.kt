@@ -12,10 +12,15 @@ data class Restaurant(
     @SerialName("vicinity") val address: String?,
     @SerialName("price_level") val price_level: Int?,
     @SerialName("website") val website: String?,
+
+    //values nested in JSON
+    //maybe move it to another object?
+    var summary: String? = null,
     var photoReference: String? = null,
-    var openingHours: Array<String>? = null
-    //price level
-    //opening hours
+    var openingHours: Array<String>? = null,
+    var lat: Double? = null,
+    var lng: Double? = null,
+    //reviews?
     //photo?
 
 )
