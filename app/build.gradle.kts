@@ -67,8 +67,10 @@ android {
     }
 }
 
+
 val ktor_version: String by project
 dependencies {
+
     implementation(libs.coil.kt)
     //MAPS
     implementation(libs.google.maps.compose)
@@ -77,6 +79,11 @@ dependencies {
     // NAVIGATION
     implementation(libs.androidx.navigation)
 
+    //navigation
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 
     implementation(libs.ktor.client.serialization.kotlinx.json)

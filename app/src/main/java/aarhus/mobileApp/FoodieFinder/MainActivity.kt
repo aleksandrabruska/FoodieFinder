@@ -4,7 +4,8 @@ package aarhus.mobileApp.FoodieFinder
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
-import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetails
+//import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetails
+import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                val intent = Intent(this@MainActivity, LogInActivity::class.java)
+                //val intent = Intent(this@MainActivity, LogInActivity::class.java)
             }
 
             FoodieFinderTheme {
@@ -71,7 +72,8 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            LogIn()
+                            RestaurantSearch()
+                            //LogIn()
 
                             //Users()
                         }

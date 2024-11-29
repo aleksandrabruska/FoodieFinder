@@ -26,10 +26,5 @@ fun MapView(latLng: LatLng){
             title = "restaurant location",
             snippet = "Localized"
         )
-       // Polyline(
-            //color = Color.Magenta,
-            //pattern = listOf(Dash(2f)),
-            //points = locations.map { LatLng(it.latitude, it.longitude) }
-        //)
     }
 }
