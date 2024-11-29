@@ -2,6 +2,7 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 
 import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
+import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -72,5 +73,8 @@ fun RestaurantSearch(){
 
 
         }
+    }
+    else{
+        Loader()
     }
 }

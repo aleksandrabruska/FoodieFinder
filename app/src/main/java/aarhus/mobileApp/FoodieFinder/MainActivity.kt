@@ -5,7 +5,8 @@ package aarhus.mobileApp.FoodieFinder
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.Register
-import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetails
+import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -72,7 +73,8 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            Register()
+                            RestaurantSearch()
+                            //Register()
                             //Users()
                         }
                 }

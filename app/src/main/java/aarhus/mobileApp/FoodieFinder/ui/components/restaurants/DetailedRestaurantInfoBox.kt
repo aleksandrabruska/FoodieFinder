@@ -39,15 +39,18 @@ fun DetailedRestaurantInfoBox(restaurant_: Restaurant){
         Spacer(modifier = Modifier.height(20.dp))
         Text(restaurant.value.summary?.let { it } ?: "Summary not available", textAlign = TextAlign.Center, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        Box(Modifier.border(BorderStroke(1.dp, Color.Black))) {
-            Column(Modifier.padding(20.dp)) {
-                Text("Opening hours:", textAlign = TextAlign.Center, fontSize = 18.sp)
-                Spacer(modifier = Modifier.height(10.dp))
-                for (i in 1..<(restaurant.value.openingHours?.size ?: 0)) {
-                    Text(restaurant.value.openingHours?.elementAt(i).let { it.toString() }
-                        ?: "None",
-                        textAlign = TextAlign.Center,
-                        fontSize = 18.sp)
+
+        if(restaurant.value.openingHours?.size != 0) {
+            Box(Modifier.border(BorderStroke(1.dp, Color.Black))) {
+                Column(Modifier.padding(20.dp)) {
+                    Text("Opening hours:", textAlign = TextAlign.Center, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    for (i in 1..<(restaurant.value.openingHours?.size ?: 0)) {
+                        Text(restaurant.value.openingHours?.elementAt(i).let { it.toString() }
+                            ?: "None",
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp)
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 
 import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
+import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.DetailedRestaurantInfoBox
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.Orientation
@@ -72,5 +73,8 @@ fun RestaurantDetailedInfo(id: String) {
                 }
             }
         }
+    }
+    else{
+        Loader()
     }
 }
