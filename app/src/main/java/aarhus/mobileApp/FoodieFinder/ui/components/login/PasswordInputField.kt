@@ -16,13 +16,13 @@ private fun computePasswordInput(text: String) : String {
 }
 
 @Composable
-fun passwordInputField() : String {
+fun passwordInputField(textHolder: String) : String {
     var password by remember { mutableStateOf("") }
 
     OutlinedTextField(
         value = password,
         onValueChange = { password = computePasswordInput(it) },
-        label = { Text("Enter password") },
+        label = { Text(textHolder) },
         visualTransformation = PasswordVisualTransformation()
     )
     return password
