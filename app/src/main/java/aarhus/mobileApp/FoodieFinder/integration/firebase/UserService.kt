@@ -1,5 +1,6 @@
 package aarhus.mobileApp.FoodieFinder.integration.firebase
 
+import aarhus.mobileApp.FoodieFinder.integration.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.toObject

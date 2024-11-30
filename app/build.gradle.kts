@@ -85,6 +85,8 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-auth")
+
 
     implementation(libs.ktor.client.serialization.kotlinx.json)
     implementation(libs.ktor.client.serialization)

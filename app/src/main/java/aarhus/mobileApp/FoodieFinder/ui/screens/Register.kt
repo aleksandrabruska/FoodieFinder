@@ -1,8 +1,11 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens
 
+import aarhus.mobileApp.FoodieFinder.domain.Email
+import aarhus.mobileApp.FoodieFinder.domain.Password
+import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.signUpUser
 import aarhus.mobileApp.FoodieFinder.ui.components.login.checkPassword
-import aarhus.mobileApp.FoodieFinder.ui.components.login.loginInputField
-import aarhus.mobileApp.FoodieFinder.ui.components.login.passwordInputField
+import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
+
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,47 +18,56 @@ import androidx.compose.runtime.remember
 
 @Composable
 fun Register() {
-    var login = ""
-    var password = ""
-    var repeat_password = ""
+    var em = ""
+    var p1 = ""
+    var p2 = ""
+    val errorMessage = remember { mutableStateOf<String?>(null) }
+    val successMessage = remember { mutableStateOf<String?>(null)}
 
-    var res by remember { mutableStateOf<String?>(null) }
 
     Column() {
-        Row() {
-            Text("Welcome to")
-        }
-        Row() {
-            Text("Foodie finder")
-        }
-        Row() {
-            login = loginInputField()
 
-        }
-        Row() {
-            password = passwordInputField("Enter your password")
-        }
-        Row() {
-            repeat_password = passwordInputField("Repeat your password")
-        }
-        Row() {
-            Button(
-                onClick = {
-                    res = checkPassword(password, repeat_password)
-                    res?.let { Log.v("reg", it) }
+        em = inputField("enter email")
+        p1 = inputField("Enter your password")
+        p2 = inputField("Repeat your password")
 
+        Button(
+            onClick = {
+                try {
+                    checkPassword(p1, p2)
+                    val email = Email(em)
+                    val password = Password(p1)
+                    Log.v("REG", "email and pass ok")
+
+                    signUpUser(email.email, password.password) { result ->
+                        result.onSuccess {
+                            errorMessage.value = null
+                            successMessage.value = "Successfully registered!"
+
+                        }.onFailure { exception ->
+                            errorMessage.value = exception.message
+                            successMessage.value = null
+                        }
+                    }
                 }
-            ) {
-                Text("Register")
+                catch (e: Exception) {
+                    errorMessage.value = e.message
+                    successMessage.value = null
+                }
+
             }
+        ) {
+            Text("Register")
         }
-        Row() {
-            res?.let {Text(it)}
+
+        errorMessage.value?.let {
+            Text(it, color = androidx.compose.ui.graphics.Color.Red)
         }
-
-
-
-
+        successMessage.value?.let {
+            Text(it, color = androidx.compose.ui.graphics.Color.Green)
+        }
     }
+
+
 
 }

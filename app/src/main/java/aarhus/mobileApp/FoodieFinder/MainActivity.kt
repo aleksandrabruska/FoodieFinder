@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            RestaurantSearch()
+                            Register()
                             //Register()
                             //Users()
                         }

@@ -1,4 +1,4 @@
-package aarhus.mobileApp.FoodieFinder.integration.firebase
+package aarhus.mobileApp.FoodieFinder.integration.model
 
 import com.google.firebase.firestore.DocumentId
 

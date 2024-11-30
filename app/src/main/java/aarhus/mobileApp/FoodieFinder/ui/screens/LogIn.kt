@@ -1,7 +1,6 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens
 
-import aarhus.mobileApp.FoodieFinder.ui.components.login.loginInputField
-import aarhus.mobileApp.FoodieFinder.ui.components.login.passwordInputField
+import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,11 +24,11 @@ fun LogIn() {
             Text("Foodie finder")
         }
         Row() {
-            login = loginInputField()
+            login = inputField("enter login")
 
         }
         Row() {
-            password = passwordInputField("Enter your login")
+            password = inputField("Enter your password")
         }
         Row() {
             Button(onClick = { Log.v("LOGIN", "login:" + login + " password:" + password) }) {
