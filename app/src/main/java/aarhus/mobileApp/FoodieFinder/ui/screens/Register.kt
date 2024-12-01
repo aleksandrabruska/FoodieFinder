@@ -8,7 +8,6 @@ import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +25,9 @@ fun Register() {
 
 
     Column() {
-
-        em = inputField("enter email")
-        p1 = inputField("Enter your password")
-        p2 = inputField("Repeat your password")
+        em = inputField("enter email", true)
+        p1 = inputField("Enter your password", false)
+        p2 = inputField("Repeat your password", false)
 
         Button(
             onClick = {

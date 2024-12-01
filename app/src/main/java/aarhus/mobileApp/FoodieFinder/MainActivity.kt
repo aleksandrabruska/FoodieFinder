@@ -62,7 +62,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val scope = rememberCoroutineScope()
 
-
             scope.launch {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -71,7 +70,7 @@ class MainActivity : ComponentActivity() {
                 startActivity(intent)
             }
 
-            FoodieFinderTheme(dynamicColor = false) {
+            FoodieFinderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize())
                     { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
