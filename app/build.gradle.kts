@@ -1,11 +1,29 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-}
+  //  id("com.google.gms.google-services")
 
+
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.secrets)
+    alias(libs.plugins.google.gms.services)
+
+}
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+    ignoreList.add("keyToIgnore")
+    ignoreList.add("sdk.*")
+
+}
 android {
     namespace = "aarhus.mobileApp.FoodieFinder"
     compileSdk = 34
+
+    buildFeatures {
+        buildConfig = true  // Enable BuildConfig generation
+    }
 
     defaultConfig {
         applicationId = "aarhus.mobileApp.FoodieFinder"
@@ -49,7 +67,33 @@ android {
     }
 }
 
+
+val ktor_version: String by project
 dependencies {
+
+    implementation(libs.coil.kt)
+    //MAPS
+    implementation(libs.google.maps.compose)
+    implementation(libs.google.gms.play.services.location)
+    implementation(libs.google.play.services.maps)
+    // NAVIGATION
+    implementation(libs.androidx.navigation)
+
+    //navigation
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-auth")
+
+
+    implementation(libs.ktor.client.serialization.kotlinx.json)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -59,6 +103,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +111,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
 }
