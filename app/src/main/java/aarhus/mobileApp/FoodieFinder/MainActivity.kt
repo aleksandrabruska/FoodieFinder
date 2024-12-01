@@ -3,6 +3,10 @@ package aarhus.mobileApp.FoodieFinder
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
+import aarhus.mobileApp.FoodieFinder.integration.model.Event
+import aarhus.mobileApp.FoodieFinder.integration.model.User
+import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
+
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.Register
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
@@ -58,14 +62,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             val scope = rememberCoroutineScope()
 
+
             scope.launch {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+                val intent = Intent(this@MainActivity, EventActivity::class.java)
+                startActivity(intent)
             }
 
-            FoodieFinderTheme {
+            FoodieFinderTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize())
                     { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
@@ -73,9 +79,14 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            Register()
+                            //Register()
                             //Register()
                             //Users()
+                            //val u1 = User("123", "Eleonora")
+                            //val u2 = User("345", "Anne")
+                            //val list = listOf(u1,u2)
+                            //var event = Event("Eleonora birthday", list, emptyList())
+                            //EventView(event)
                         }
                 }
             }
