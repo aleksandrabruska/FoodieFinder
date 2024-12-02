@@ -25,15 +25,19 @@ fun BasicRestaurantInfoBox(restaurant_: Restaurant) {
     Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(restaurant.value.address?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        Text("Rating " + (restaurant.value.rating?.let { it.toString() } ?: "None")
-                + " based on " + (restaurant.value.ratingsNumber?.let { it.toString() } ?: "None")
-                + " reviews", textAlign = TextAlign.Center, fontSize = 18.sp)
-        var stars = ""
-        for (i in 1..(restaurant.value.price_level?.let{it} ?: 1)){
-            stars +="*"
+        if(restaurant.value.rating != null) {
+            Text("Rating " + (restaurant.value.rating?.let { it.toString() } ?: "None")
+                    + " based on " + (restaurant.value.ratingsNumber?.let { it.toString() }
+                ?: "None")
+                    + " reviews", textAlign = TextAlign.Center, fontSize = 18.sp)
         }
-        Text("Price level: " + stars, fontSize = 18.sp)
-
+        if(restaurant.value.price_level != null) {
+            var stars = ""
+            for (i in 1..(restaurant.value.price_level?.let { it } ?: 1)) {
+                stars += "*"
+            }
+            Text("Price level: " + stars, fontSize = 18.sp)
+        }
     }
 
 }

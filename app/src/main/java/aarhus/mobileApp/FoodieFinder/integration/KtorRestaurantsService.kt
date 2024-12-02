@@ -93,6 +93,7 @@ class KtorRestaurantsService : RestaurantsService {
                 }
 
             }
+            Log.v("Restaurants found: ", restaurants.size.toString())
             restaurants
         } catch (e: Exception) {
             Log.v("RESTAURANT SERVICE", e.toString())

@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
 fun Map(lat: Double, lng: Double) {
-    val context = LocalContext.current
+   /* val context = LocalContext.current
     val granted = remember{
         mutableStateOf(PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
             context,
@@ -33,6 +33,6 @@ fun Map(lat: Double, lng: Double) {
         if(!granted.value){
             launcher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
-    }
+    }*/
     MapView(LatLng(lat, lng))
 }

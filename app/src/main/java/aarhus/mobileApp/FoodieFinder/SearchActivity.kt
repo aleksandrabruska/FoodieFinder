@@ -18,11 +18,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.components.Component
+import com.howard.simplemapapp.intergration.google.MapsService
 import kotlinx.coroutines.launch
 
 class SearchActivity : ComponentActivity(){
-
+    private val locationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,7 +37,7 @@ class SearchActivity : ComponentActivity(){
                 Scaffold(modifier = Modifier.fillMaxSize())
                 { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        RestaurantSearch()
+                        RestaurantSearch(MapsService(locationClient))
                     }
                 }
             }
