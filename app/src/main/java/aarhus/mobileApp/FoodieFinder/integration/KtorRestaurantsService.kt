@@ -94,7 +94,7 @@ class KtorRestaurantsService : RestaurantsService {
 
             }
             Log.v("Restaurants found: ", restaurants.size.toString())
-            restaurants
+            restaurants.subList(0, if(maxCount > restaurants.size) restaurants.size else maxCount )
         } catch (e: Exception) {
             Log.v("RESTAURANT SERVICE", e.toString())
             emptyList()

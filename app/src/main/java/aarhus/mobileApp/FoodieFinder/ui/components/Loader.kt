@@ -23,7 +23,7 @@ fun Loader() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            CircularProgressIndicator(color = Color.Yellow)
+            CircularProgressIndicator(color = Color.DarkGray)
         }
     }
 }

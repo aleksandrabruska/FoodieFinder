@@ -39,7 +39,8 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> Unit) {
+fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> Unit,
+                   navigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
     var offset by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
@@ -60,7 +61,8 @@ fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> 
             }
         },
         infoClicked = details,
-        arrowClicked = navigate
+        arrowClicked = navigate,
+        backClicked = navigateBack
     ) {
     if (restaurant != null) {
             OutlinedCard(

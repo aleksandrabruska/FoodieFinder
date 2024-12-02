@@ -34,6 +34,8 @@ fun RestaurantSearch(mapsService: MapsService){
     val context = LocalContext.current
     var currentLocation : Location?= null
 
+    val maxRestNum = 10;
+
     val granted = remember{
         mutableStateOf(
             PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
@@ -59,7 +61,7 @@ fun RestaurantSearch(mapsService: MapsService){
                 restaurantsService.get(
                     currentLocation!!.latitude,
                     currentLocation!!.longitude,
-                    10,
+                    maxRestNum,
                     1000
                 )
             isLoading.value = false
@@ -81,33 +83,24 @@ fun RestaurantSearch(mapsService: MapsService){
             navController = controller,
             startDestination = "venueNo1"
         ) {
-            composable("venueNo1") {
-                RestaurantInfo(restaurants.value.get(0),
-                    {controller.navigate("venueNo1details")}) {
-                    controller.navigate("venueNo2")
-                }
-            }
-            composable("venueNo1details"){
-                RestaurantDetailedInfo(restaurants.value.get(0).id!!)
-            }
-            composable("venueNo2") {
-                RestaurantInfo(restaurants.value.get(1),
-                    {controller.navigate("venueNo2details")}) {
-                    controller.navigate("venueNo3")
-                }
-            }
-            composable("venueNo2details"){
-                RestaurantDetailedInfo(restaurants.value.get(1).id!!)
-            }
-            composable("venueNo3") {
-                RestaurantInfo(restaurants.value.get(2),
-                    {controller.navigate("venueNo3details")}) {}
-            }
-            composable("venueNo3details"){
-                RestaurantDetailedInfo(restaurants.value.get(2).id!!)
-            }
+            var actualRestNum = restaurants.value.size
+            for(i in 0..actualRestNum - 1){
+                composable("venueNo$i") {
+                    RestaurantInfo(restaurants.value.get(i),
+                        {controller.navigate("venueNo$i"+"details")},
+                        { if(i < actualRestNum-1)
+                        {controller.navigate("venueNo" + ((i+1).toString())) }
+                        else {}},
+                        { if(i > 0)
+                        {controller.navigate("venueNo"+((i-1).toString())) }
+                        else {}})
 
 
+                }
+                composable("venueNo$i" + "details"){
+                    RestaurantDetailedInfo(restaurants.value.get(i).id!!)
+                }
+            }
         }
     }
     else{

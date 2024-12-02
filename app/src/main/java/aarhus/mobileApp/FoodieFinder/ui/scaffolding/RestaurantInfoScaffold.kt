@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 fun RestaurantInfoScaffold(modifier: Modifier = Modifier,
                            checkClicled: ()-> Unit, locationClicked: () -> Unit,
                            infoClicked: () -> Unit, arrowClicked: () -> Unit,
+                           backClicked: () -> Unit,
                            content: @Composable () -> Unit){
 //TODO: Implement arrow back
         Scaffold(
@@ -45,6 +46,9 @@ fun RestaurantInfoScaffold(modifier: Modifier = Modifier,
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
+                            IconButton(onClick = backClicked) {
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "prev")
+                            }
                             IconButton(onClick = checkClicled) {
                                 Icon(Icons.Filled.Check, contentDescription = "choose")
                             }
