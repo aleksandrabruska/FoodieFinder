@@ -1,9 +1,8 @@
 package aarhus.mobileApp.FoodieFinder
 
-import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.User
+import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
-import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 
 class EventActivity: ComponentActivity() {

@@ -1,22 +1,19 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens
 
-import aarhus.mobileApp.FoodieFinder.domain.Email
-import aarhus.mobileApp.FoodieFinder.domain.Password
-import aarhus.mobileApp.FoodieFinder.integration.firebase.User
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.logInUser
-import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.signUpUser
-import aarhus.mobileApp.FoodieFinder.ui.components.login.checkPassword
 import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
-import android.util.Log
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseUser
+
+
 
 @Composable
 fun UserDetails(user: FirebaseUser) {
@@ -41,7 +38,6 @@ fun LogIn() {
 
     Column() {
         email = inputField("enter email", true)
-
         password = inputField("Enter your password", false)
 
         Button(
@@ -69,22 +65,27 @@ fun LogIn() {
         successMessage.value?.let {
             Text(it, color = androidx.compose.ui.graphics.Color.Green)
         }
-
-        user.value?.let {
-            UserDetails(it)
-        }
-        /*
-        Row() {
-            Column() {
-                Text("Don't have an account?")
-            }
-            Column() {
-                Button(onClick ={Log.v ("LOGIN", "register")}) {
-                    Text("Register!")
-                }
-            }
-        }*/
-
     }
+}
 
+@Composable
+fun Loggg() {
+    val controller = rememberNavController()
+
+    NavHost(
+        navController = controller,
+        startDestination = "logInScreen"
+    ) {
+        composable("logInScreen") {
+
+        }
+
+        composable("register") {
+
+        }
+
+        composable ("home") {
+
+        }
+    }
 }
