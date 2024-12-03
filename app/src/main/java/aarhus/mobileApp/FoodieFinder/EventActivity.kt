@@ -1,6 +1,6 @@
 package aarhus.mobileApp.FoodieFinder
 
-import aarhus.mobileApp.FoodieFinder.integration.model.User
+import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
@@ -21,8 +21,8 @@ class EventActivity: ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val newRestaurantID = intent.getStringExtra("restaurant_chosen_id")
-            val u1 = User("123", "Eleonora")
-            val u2 = User("345", "Anne")
+            val u1 = UserFB("123", "Eleonora")
+            val u2 = UserFB("345", "Anne")
             val list = listOf(u1,u2)
             var event = Event("Eleonora birthday", list, emptyList())
 

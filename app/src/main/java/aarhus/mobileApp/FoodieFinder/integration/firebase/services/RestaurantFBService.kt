@@ -1,7 +1,6 @@
-package aarhus.mobileApp.FoodieFinder.integration.firebase
+package aarhus.mobileApp.FoodieFinder.integration.firebase.services
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
-import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
