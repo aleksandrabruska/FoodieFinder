@@ -35,7 +35,7 @@ fun Users() {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 models.forEach {
                     User(it)
-                    printFriends(models, it)
+                    PrintFriends(it, service)
                 }
 
             }
@@ -48,7 +48,7 @@ fun Users() {
 
     }
 
-    /*var name by remember { mutableStateOf<String>("")}
+    var name by remember { mutableStateOf<String>("")}
     var email by remember { mutableStateOf<String>("")}
 
     var f1 by remember { mutableStateOf<String>("")}
@@ -87,50 +87,39 @@ fun Users() {
         }
 
 
-    }*/
+    }
 }
 
 @Composable
 fun User(model: UserFB) {
     Column {
+        Text("=======================")
         Text("name: " + model.name)
         Text("email: " + model.email)
-        model.friends.forEach{Text(it)}
+        model.friends.forEach { Text(it) }
     }
 }
 
-@Composable
-fun printFriends(users: List<UserFB>, mainUser: UserFB) {
-    Column {
-        users.forEach {
-            if (mainUser.friends.contains(it.name)) {
-                Text("USER " + mainUser.name + " HAS A FRIEND " + it.name)
-            }
-        }
-    }
-}
 
 @Composable
 fun PrintFriends(model: UserFB, service: UserFBService) {
-    val friendsNames = remember { mutableStateOf<List<String>>(emptyList()) }
-    val isLoading = remember { mutableStateOf(true) }
+    val friendNames = remember { mutableStateListOf<String>() }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
         model.friends.forEach {
-            val a = service.getHorse(it)
-            if (a != null)
-                friendsNames.value = friendsNames.value + a!!.name
+            val friend = service.getHorse(it)
+            if (friend != null) {
+                friendNames.add(friend.name)
+            }
         }
-        isLoading.value = false
+
+    }
+
+    Column {
+        friendNames.forEach { friendName ->
+            Text("---user: " + model.name + " has a friend: " + friendName)
+        }
     }
 
 
-
-    if(isLoading.value == false){
-    Column {
-        friendsNames.value.forEach { name ->
-            Log.v("Friend!!!", name)
-            Text(text = name)
-        }
-    }}
 }
