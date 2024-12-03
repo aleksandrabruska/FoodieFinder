@@ -3,6 +3,7 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.domain.Email
 import aarhus.mobileApp.FoodieFinder.domain.Password
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.signUpUser
+import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.login.checkPassword
 import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
 
@@ -15,16 +16,30 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
 
 
+suspend fun checkIfNameTaken(name: String) {
+    val service = UserFBService()
+
+    service.getHorse(name)
+
+}
+
 @Composable
 fun Register() {
+
+    LaunchedEffect(Unit) {
+
+    }
     var em = ""
     var p1 = ""
     var p2 = ""
+    var name = ""
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val successMessage = remember { mutableStateOf<String?>(null)}
 
 
+
     Column() {
+        name = inputField("enter nickname", true)
         em = inputField("enter email", true)
         p1 = inputField("Enter your password", false)
         p2 = inputField("Repeat your password", false)
@@ -35,6 +50,8 @@ fun Register() {
                     checkPassword(p1, p2)
                     val email = Email(em)
                     val password = Password(p1)
+                    //checkIfNameTaken(name)
+
                     Log.v("REG", "email and pass ok")
 
                     signUpUser(email.email, password.password) { result ->

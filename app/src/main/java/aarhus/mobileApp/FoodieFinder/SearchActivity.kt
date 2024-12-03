@@ -1,7 +1,6 @@
 package aarhus.mobileApp.FoodieFinder
 
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
-import aarhus.mobileApp.FoodieFinder.integration.model.User
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
