@@ -4,6 +4,7 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.RestaurantFBService.Companion
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.RestaurantFBService.Companion.RESTAURANTS_COLLECTION_NAME
+import android.util.Log
 import androidx.compose.runtime.Composable
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -46,11 +47,30 @@ class UserFBService {
     }
 
     suspend fun getHorse(id: String): UserFB? {
-        return db.collection(USERS_COLLECTION_NAME)
+
+        if (!id.isNotBlank()) {
+            return null
+        }
+        Log.v("FRIEND", "IN THE HORSE")
+
+        var userDocument = db.collection(USERS_COLLECTION_NAME)
             .document(id)
             .get()
             .await()
             .toObject<UserFB>()
+
+        Log.v("FRIEND", "GOT:" + userDocument)
+
+        return userDocument
+        /*
+        if (userDocument.exists()) {
+            Log.v("FRIEND", "RETURNING")
+            return
+
+        }
+
+
+        return null*/
     }
 
 }
