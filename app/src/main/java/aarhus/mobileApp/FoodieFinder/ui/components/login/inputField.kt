@@ -17,7 +17,11 @@ fun inputField(placeH: String, visible: Boolean) : String {
 
     OutlinedTextField(
         value = text,
-        onValueChange = { text = (it) },
+        onValueChange = { input ->
+            text = input.filter {
+                !it.isWhitespace()
+            }
+        },
         visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
 
         label = { Text(placeH) },

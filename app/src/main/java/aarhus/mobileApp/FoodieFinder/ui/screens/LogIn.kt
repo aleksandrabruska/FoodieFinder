@@ -1,6 +1,7 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens
 
-import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.logInUser
+import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
+import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -8,23 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 
 
-
-@Composable
-fun UserDetails(user: FirebaseUser) {
-    val email = user.email
-    val uid = user.uid
-    Column {
-        Text(email.toString())
-        Text(uid.toString())
-    }
-
-}
 
 @Composable
 fun LogIn() {
@@ -33,28 +25,32 @@ fun LogIn() {
 
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val successMessage = remember { mutableStateOf<String?>(null) }
+    val user = remember {mutableStateOf<UserFB?>(null)}
+    val scope = rememberCoroutineScope()
 
-    val user = remember {mutableStateOf<FirebaseUser?>(null)}
+    val authService = remember{ AuthService() }
+
 
     Column() {
         email = inputField("enter email", true)
         password = inputField("Enter your password", false)
 
         Button(
-            onClick = {
-                // result is a user
-                logInUser(email, password) { result ->
-                    result.onSuccess { loggedInUser ->
-                        errorMessage.value = null
-                        successMessage.value = "Successfully logged in!"
-                        user.value = loggedInUser
 
-                    }.onFailure { exception ->
-                        errorMessage.value = exception.message
+            onClick = {
+                scope.launch {
+                    try {
+                        user.value = authService.logIn(email, password)
+
+                        successMessage.value = "Logged in!"
+                        errorMessage.value = null
+                    }
+                    catch (e: Exception) {
+                        errorMessage.value = e.message
                         successMessage.value = null
                     }
-                }
 
+                }
             }) {
             Text("Log in!")
         }
@@ -64,6 +60,12 @@ fun LogIn() {
         }
         successMessage.value?.let {
             Text(it, color = androidx.compose.ui.graphics.Color.Green)
+        }
+
+        user.value?.let {
+            Text("USERNAME: " + user.value!!.name)
+            Text("EMAIL: " + user.value!!.email)
+            Text("USER ID:" + user.value!!.id)
         }
     }
 }

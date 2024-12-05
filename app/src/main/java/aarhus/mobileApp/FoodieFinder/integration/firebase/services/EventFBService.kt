@@ -23,10 +23,10 @@ class EventFBService {
         }
     }
 
-    suspend fun saveEvent(ev: EventFB) {
+    fun saveEvent(ev: EventFB) {
         db.collection(EVENTS_COLLECTION_NAME)
             .add(ev)
-            .await()
+
 
     }
 }

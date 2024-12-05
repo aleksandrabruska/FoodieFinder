@@ -1,11 +1,8 @@
 package aarhus.mobileApp.FoodieFinder.integration.firebase
 
-import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
-import aarhus.mobileApp.FoodieFinder.integration.firebase.services.RestaurantFBService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.login.inputField
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -18,18 +15,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseUser
-import kotlin.random.Random
 
 @Composable
 fun Users() {
     val service = remember{ UserFBService() }
     var models by remember { mutableStateOf<List<UserFB>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
+
     LaunchedEffect(key1 = Unit) {
         models = service.getUsers()
         isLoading.value = false
     }
+
     if(isLoading.value == false) {
         Column {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -75,6 +72,7 @@ fun Users() {
         Button(
             onClick = {
                 val a = UserFB(
+                    "",
                     name,
                     email,
                     arrayListOf(f1, f2)
@@ -107,7 +105,7 @@ fun PrintFriends(model: UserFB, service: UserFBService) {
 
     LaunchedEffect(key1 = Unit) {
         model.friends.forEach {
-            val friend = service.getHorse(it)
+            val friend = service.getUser(it)
             if (friend != null) {
                 friendNames.add(friend.name)
             }
