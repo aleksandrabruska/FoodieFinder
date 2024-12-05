@@ -2,6 +2,7 @@ package aarhus.mobileApp.FoodieFinder
 
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
+import aarhus.mobileApp.FoodieFinder.integration.firebase.Events
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Restaurants
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
                             //val list = listOf(u1,u2)
                             //var event = Event("Eleonora birthday", list, emptyList())
                             //EventView(event)
-                            Users()
+                            Events()
 
                         }
                 }

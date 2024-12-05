@@ -31,15 +31,15 @@ fun Restaurants() {
         Button(
             onClick = {
                 val a = RestaurantFB(
-                    "",
-                    "someID" + Random.nextInt(0, 100),
+                    ("someID" + Random.nextInt(0, 1000000)),
                     Random.nextInt(0, 4),
                     arrayListOf(
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
-                        )
+                        ),
+                    "fancy burger " + Random.nextInt(0, 100).toString()
                 )
                 service.saveRestaurant(a)
             }
@@ -52,9 +52,9 @@ fun Restaurants() {
 @Composable
 fun Restaurant(model: RestaurantFB) {
     Column {
-        Text("(auto generated) Id: " + model.id)
-        Text("restaurant id:" + model.restaurant_id)
+        Text("place Id: " + model.placeID)
         Text("number of votes: " + model.number_of_votes)
+        Text("name: " + model.name)
         model.users_id.forEach {Text(it)}
     }
 }
