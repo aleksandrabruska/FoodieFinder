@@ -55,6 +55,6 @@ fun Restaurant(model: RestaurantFB) {
         Text("place Id: " + model.placeID)
         Text("number of votes: " + model.number_of_votes)
         Text("name: " + model.name)
-        model.users_id.forEach {Text(it)}
+        model.user_emails.forEach {Text(it)}
     }
 }

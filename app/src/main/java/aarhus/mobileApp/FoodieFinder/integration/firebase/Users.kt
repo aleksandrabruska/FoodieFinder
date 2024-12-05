@@ -45,11 +45,11 @@ fun Users() {
 
     }
 
-    var name by remember { mutableStateOf<String>("")}
-    var email by remember { mutableStateOf<String>("")}
+    val name = remember { mutableStateOf<String>("") }
+    val email = remember { mutableStateOf<String>("") }
 
-    var f1 by remember { mutableStateOf<String>("")}
-    var f2 by remember { mutableStateOf<String>("")}
+    val f1 = remember { mutableStateOf<String>("") }
+    val f2 = remember { mutableStateOf<String>("") }
 
 
     LaunchedEffect(key1 = Unit) {
@@ -64,18 +64,18 @@ fun Users() {
 
         }
 
-        name = inputField("enter name", true)
-        email = inputField("enter email", true)
-        f1 = inputField("add friend 1", true)
-        f2 = inputField("add friend 2", true)
+        inputField("enter name", true, name)
+        inputField("enter email", true, email)
+        inputField("add friend 1", true, f1)
+        inputField("add friend 2", true, f2)
 
         Button(
             onClick = {
                 val a = UserFB(
                     "",
-                    name,
-                    email,
-                    arrayListOf(f1, f2)
+                    name.value,
+                    email.value,
+                    arrayListOf(f1.value, f2.value)
                 )
                 service.saveUser(a)
 

@@ -10,7 +10,6 @@ import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.Register
-import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
 import aarhus.mobileApp.FoodieFinder.ui.screens.addFriend
 
 import android.os.Bundle
@@ -80,16 +79,17 @@ class MainActivity : ComponentActivity() {
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)
                             //)
-                            //Register()
-                            //Register()
-                            //Users()
+
                             //val u1 = User("123", "Eleonora")
                             //val u2 = User("345", "Anne")
                             //val list = listOf(u1,u2)
                             //var event = Event("Eleonora birthday", list, emptyList())
                             //EventView(event)
-                            addFriend()
 
+
+                            addFriend()
+                            //Register()
+                            //LogIn()
                         }
                 }
             }

@@ -59,6 +59,23 @@ class UserFBService {
             .await()
     }
 
+    suspend fun getUserByEmail(email: String): UserFB? {
+        if (email.isBlank()) {
+            return null
+        }
+
+        val querySnapshot = db.collection(USERS_COLLECTION_NAME)
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+
+        return if (querySnapshot.isEmpty) {
+            null
+        } else {
+            querySnapshot.documents.firstOrNull()?.toObject<UserFB>()
+        }
+    }
+
 
 
 }

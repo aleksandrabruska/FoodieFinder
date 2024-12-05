@@ -26,23 +26,23 @@ fun Register() {
     val successMessage = remember { mutableStateOf<String?>(null)}
 
 
-    var email = ""
-    var p1 = ""
-    var p2 = ""
-    var name = ""
+    val email = remember { mutableStateOf<String>("") }
+    val p1 = remember { mutableStateOf<String>("") }
+    val p2 = remember { mutableStateOf<String>("") }
+    val name = remember { mutableStateOf<String>("") }
 
 
     Column() {
-        name = inputField("enter nickname", true)
-        email = inputField("enter email", true)
-        p1 = inputField("Enter your password", false)
-        p2 = inputField("Repeat your password", false)
+        inputField("enter nickname", true, name)
+        inputField("enter email", true, email)
+        inputField("Enter your password", false, p1)
+        inputField("Repeat your password", false, p2)
 
         Button(
             onClick = {
                 scope.launch {
                     try {
-                        authService.singUp(name, email, p1, p2)
+                        authService.singUp(name.value, email.value, p1.value, p2.value)
 
 
                         successMessage.value = "Registered!"

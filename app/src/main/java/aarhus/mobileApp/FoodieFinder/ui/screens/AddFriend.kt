@@ -3,9 +3,10 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
-import android.util.Log
+import aarhus.mobileApp.FoodieFinder.ui.components.friends.ManageFriendButton
+import aarhus.mobileApp.FoodieFinder.ui.components.friends.SearchAndAddFriend
+import aarhus.mobileApp.FoodieFinder.ui.components.friends.UserDetails
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun addFriend() {
@@ -36,20 +36,15 @@ fun addFriend() {
     }
 
     Column () {
+        user.value?.let { user ->
+            val friendsState = remember { mutableStateListOf(*user.friends.toTypedArray()) }
 
-        user.value?.let {
-            val friendsState = remember { mutableStateListOf(*it.friends.toTypedArray()) }
+            UserDetails(user)
 
-            Text(user.value!!.id)
-            Text(user.value!!.email)
-            Text(user.value!!.name)
-            Text("YOUR FRIENDS:")
-            friendsState.forEach {
-                Text("  friend: " + it)
-            }
+            SearchAndAddFriend(scope, user, friendsState)
 
             models.forEach {
-                friend(userService, scope, user.value!!, it, friendsState)
+                friend(userService, scope, user, it, friendsState)
 
             }
         }
@@ -61,31 +56,9 @@ fun addFriend() {
 
 @Composable
 fun friend(service: UserFBService, scope: CoroutineScope, user: UserFB, model: UserFB, friendsState: MutableList<String>) {
-    val added = model.email in friendsState
-
-    if (user.id != model.id) {
-
-        Text("\n--IN DB--")
-        Text(model.email)
-        Text(model.name)
-
-        Button(onClick = {
-            scope.launch {
-                if (!added) {
-                    service.addFriend(user.id, model.email)
-                    friendsState.add(model.email)
-                } else {
-                    service.removeFriend(user.id, model.email)
-                    friendsState.remove(model.email)
-                }
-            }
-        }) {
-            if (!added) {
-                Text("ADD")
-            } else {
-                Text("REMOVE")
-            }
-        }
-
+    if(model.email in friendsState) {
+        Text("\nYour friends")
+        UserDetails(model)
+        ManageFriendButton(service, scope, user, model, friendsState)
     }
 }

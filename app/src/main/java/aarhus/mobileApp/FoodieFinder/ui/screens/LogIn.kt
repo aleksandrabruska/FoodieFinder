@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LogIn() {
-    var email = ""
-    var password = ""
+    val email = remember { mutableStateOf<String>("") }
+    val password = remember { mutableStateOf<String>("") }
 
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val successMessage = remember { mutableStateOf<String?>(null) }
@@ -32,15 +32,15 @@ fun LogIn() {
 
 
     Column() {
-        email = inputField("enter email", true)
-        password = inputField("Enter your password", false)
+        inputField("enter email", true, email)
+        inputField("Enter your password", false, password)
 
         Button(
 
             onClick = {
                 scope.launch {
                     try {
-                        user.value = authService.logIn(email, password)
+                        user.value = authService.logIn(email.value, password.value)
 
                         successMessage.value = "Logged in!"
                         errorMessage.value = null
