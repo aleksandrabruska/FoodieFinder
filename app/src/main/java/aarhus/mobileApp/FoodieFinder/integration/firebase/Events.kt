@@ -43,7 +43,7 @@ fun Events() {
 
         Log.v("EVENT", "cos innego")
 
-        //cservice.saveEvent(event)
+        //service.saveEvent(event)
 
         Log.v("EVENT", event.id)
 

@@ -1,6 +1,5 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens
 
-import aarhus.mobileApp.FoodieFinder.SearchActivity
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.ParticipantsList
@@ -28,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 
 @Composable
-fun EventView(event: Event){
+fun EventView(event: Event, addVenueClicked: () -> Unit, backClicked: () -> Unit){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
     val scrollState = rememberScrollState()
     var offset by remember { mutableStateOf(0f) }
-    EventScaffold(event.name,Modifier, {}) {
+    EventScaffold(event.name,Modifier, backClicked) {
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .scrollable(orientation = Orientation.Vertical,
             state = rememberScrollableState { delta ->
@@ -43,11 +42,7 @@ fun EventView(event: Event){
             }).verticalScroll(scrollState, offset < -40) ){
             //Text(event.name,  textAlign = TextAlign.Center, fontSize = 25.sp)
             ParticipantsList(event.participants)
-            SuggestionsList(event.venuesIDs){ scope.launch {
-                val intent = Intent(context, SearchActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                context.startActivity(intent)
-            }}
+            SuggestionsList(event.venuesIDs, addVenueClicked)
 
         }
     }
@@ -61,6 +56,6 @@ fun previewEvent(){
     val u2 = UserFB("345", "Anne")
     val list = listOf(u1,u2)
     var event = Event("Eleonora birthday", list, emptyList())
-    EventView(event)
+    //EventView(event)
     //}
 }

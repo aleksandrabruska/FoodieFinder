@@ -2,6 +2,7 @@ package aarhus.mobileApp.FoodieFinder
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
+import aarhus.mobileApp.FoodieFinder.navigation.EventNavigation
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 import android.os.Bundle
@@ -13,26 +14,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.google.android.gms.location.LocationServices
+import com.howard.simplemapapp.intergration.google.MapsService
 
 class EventActivity: ComponentActivity() {
+    private val locationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContent {
-            val newRestaurantID = intent.getStringExtra("restaurant_chosen_id")
-            val u1 = UserFB("123", "Eleonora")
-            val u2 = UserFB("345", "Anne")
-            val list = listOf(u1,u2)
-            var event = Event("Eleonora birthday", list, emptyList())
-
-            if(newRestaurantID != null)
-                event.venuesIDs = event.venuesIDs + newRestaurantID
             FoodieFinderTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize())
                 { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        EventView(event)
+                        EventNavigation(MapsService(locationClient))
                     }
                 }
             }

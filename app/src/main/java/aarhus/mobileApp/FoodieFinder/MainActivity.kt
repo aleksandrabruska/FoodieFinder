@@ -3,14 +3,6 @@ package aarhus.mobileApp.FoodieFinder
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Events
-import aarhus.mobileApp.FoodieFinder.integration.firebase.Restaurants
-import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
-import aarhus.mobileApp.FoodieFinder.integration.model.Event
-import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
-
-import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
-import aarhus.mobileApp.FoodieFinder.ui.screens.Register
-import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantSearch
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,28 +11,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.rememberCoroutineScope
-import io.ktor.client.HttpClient
-import kotlinx.serialization.SerialName
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.runBlocking
-import org.json.JSONArray
-import org.json.JSONObject
-import com.google.firebase.firestore.FirebaseFirestore;
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -67,8 +43,8 @@ class MainActivity : ComponentActivity() {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                //val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                //startActivity(intent)
+                val intent = Intent(this@MainActivity, EventActivity::class.java)
+                startActivity(intent)
             }
 
             FoodieFinderTheme {
@@ -87,7 +63,7 @@ class MainActivity : ComponentActivity() {
                             //val list = listOf(u1,u2)
                             //var event = Event("Eleonora birthday", list, emptyList())
                             //EventView(event)
-                            Events()
+                            //Events()
 
                         }
                 }

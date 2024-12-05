@@ -1,8 +1,13 @@
-package aarhus.mobileApp.FoodieFinder.ui.screens
+package aarhus.mobileApp.FoodieFinder.navigation
 
 import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
+import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.Loader
+import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
+import aarhus.mobileApp.FoodieFinder.ui.screens.MyEvents
+import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetailedInfo
+import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.internal.composableLambdaN
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +29,7 @@ import android.location.Location
 //TODO - add loading
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
-fun RestaurantSearch(mapsService: MapsService){
+fun EventNavigation(mapsService: MapsService){
     val restaurantsService = remember { KtorRestaurantsService() }
     val isLoading = remember { mutableStateOf(true) }
     val restaurants = remember { mutableStateOf<List<Restaurant>>(emptyList()) }
@@ -81,25 +85,36 @@ fun RestaurantSearch(mapsService: MapsService){
 
         NavHost(
             navController = controller,
-            startDestination = "venueNo1"
+            startDestination = "event/0"
         ) {
-            var actualRestNum = restaurants.value.size
-            for(i in 0..actualRestNum - 1){
-                composable("venueNo$i") {
-                    RestaurantInfo(restaurants.value.get(i),
-                        {controller.navigate("venueNo$i"+"details")},
-                        { if(i < actualRestNum-1)
-                        {controller.navigate("venueNo" + ((i+1).toString())) }
-                        else {}},
-                        { if(i > 0)
-                        {controller.navigate("venueNo"+((i-1).toString())) }
-                        else {}})
+            composable("my_events"){
+                MyEvents()
+            }
+            composable("event/{id}"){
+                var event = Event("Mary birthday", emptyList(), emptyList())
+                EventView(event, {controller.navigate("venue/0")},
+                    {controller.navigate("my_events")})
+            }
+            composable("venue/{num}") {
+                var actualRestNum = restaurants.value.size
+                val num = (it.arguments?.getString("num") ?: "0").toInt()
+                val next: Int = (if(num < actualRestNum-1) (num+1) else 0)
+                val prev: Int = (if(num > 0) (num-1) else (actualRestNum-1))
+                    Log.v("Next", next.toString())
+                Log.v("Prev", prev.toString())
+                RestaurantInfo(restaurants.value.get(num),
+                        {controller.navigate("venueDetails/$num")},
+                        {controller.navigate("venue/$next")},
+                        {controller.navigate("venue/$prev")},
+                        {controller.navigate("event/0")},
+                        {controller.navigate("event/0")})
 
 
-                }
-                composable("venueNo$i" + "details"){
-                    RestaurantDetailedInfo(restaurants.value.get(i).id!!)
-                }
+            }
+
+            composable("venueDetails/{num}"){
+                val num = (it.arguments?.getString("num") ?: "0").toInt()
+                RestaurantDetailedInfo(restaurants.value.get(num).id!!)
             }
         }
     }

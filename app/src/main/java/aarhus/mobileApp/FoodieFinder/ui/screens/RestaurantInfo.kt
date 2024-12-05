@@ -3,13 +3,13 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.EventActivity
 import aarhus.mobileApp.FoodieFinder.MainActivity
 import aarhus.mobileApp.FoodieFinder.MapsActivity
-import aarhus.mobileApp.FoodieFinder.SearchActivity
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.BasicRestaurantInfoBox
 //import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.RestaurantDetailsBox
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.RestaurantPhoto
 import aarhus.mobileApp.FoodieFinder.ui.scaffolding.RestaurantInfoScaffold
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -40,17 +40,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> Unit,
-                   navigateBack: () -> Unit) {
+                   navigateBack: () -> Unit, check: () -> Unit, backHandler: () -> Unit) {
     val scrollState = rememberScrollState()
     var offset by remember { mutableStateOf(0f) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    RestaurantInfoScaffold(checkClicled = {
-        val intent = Intent(context, EventActivity::class.java)
-        intent.putExtra("restaurant_chosen_id", restaurant.id)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        context.startActivity(intent)
-    },
+    BackHandler{
+        backHandler()
+    }
+    RestaurantInfoScaffold(checkClicled = check,
         locationClicked = {
             scope.launch {
                 val intent = Intent(context, MapsActivity::class.java)
@@ -83,28 +81,7 @@ fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> 
                         textAlign = TextAlign.Center)
                     RestaurantPhoto(restaurant.photoReference)
                     BasicRestaurantInfoBox(restaurant)
-                    //TODO: move that up??
-                    /*
-                    Button (onClick = {
-                        scope.launch {
-                            val intent = Intent(context, MapsActivity::class.java)
-                            intent.putExtra("restaurant_lat", restaurant.lat)
-                            intent.putExtra("restaurant_lng", restaurant.lng)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                            context.startActivity(intent)
-                        }
-                    }){
-                        Text("See on map")
-                    }
-                    Button(onClick = details){
-                        Text("Details")
-                    }
-                    Button (onClick = navigate){
-                        Text("Next")
-                    }
-                    Button({}){
-                        Text("Choose")
-                    }*/
+
                 }
             }
         }

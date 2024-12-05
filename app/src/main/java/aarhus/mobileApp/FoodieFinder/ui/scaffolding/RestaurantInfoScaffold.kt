@@ -35,7 +35,6 @@ fun RestaurantInfoScaffold(modifier: Modifier = Modifier,
                            infoClicked: () -> Unit, arrowClicked: () -> Unit,
                            backClicked: () -> Unit,
                            content: @Composable () -> Unit){
-//TODO: Implement arrow back
         Scaffold(
             bottomBar = {
 

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScaffold(eventName: String, modifier: Modifier = Modifier, menuClicked: () -> Unit, content: @Composable () -> Unit){
-//TODO: Implement arrow back
         Scaffold(
             topBar = {
 
