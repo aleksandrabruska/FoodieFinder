@@ -1,5 +1,6 @@
 package aarhus.mobileApp.FoodieFinder.integration.firebase.services
 
+import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService.Companion.USERS_COLLECTION_NAME
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,9 +23,11 @@ class RestaurantFBService {
         }
     }
 
-    fun saveRestaurant(res: RestaurantFB) {
+    fun saveRestaurant(res: RestaurantFB){
         db.collection(RESTAURANTS_COLLECTION_NAME)
             .document(res.placeID)
             .set(res)
     }
+
+
 }

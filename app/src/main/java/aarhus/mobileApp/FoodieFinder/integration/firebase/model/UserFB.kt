@@ -7,5 +7,6 @@ data class UserFB(
     @DocumentId var id: String = "",
     var name: String = "",
     val email: String = "",
-    val friends: ArrayList<String> = ArrayList()
+    val friends: ArrayList<String> = ArrayList(),
+    val events: Map<String, Boolean> = mapOf<String, Boolean>()
 )

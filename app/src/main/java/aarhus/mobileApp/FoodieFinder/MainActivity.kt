@@ -6,10 +6,12 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.Events
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Restaurants
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
+import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.Register
+import aarhus.mobileApp.FoodieFinder.ui.screens.UserEvents
 import aarhus.mobileApp.FoodieFinder.ui.screens.addFriend
 
 import android.os.Bundle
@@ -87,9 +89,10 @@ class MainActivity : ComponentActivity() {
                             //EventView(event)
 
 
-                            addFriend()
+                            //addFriend()
                             //Register()
                             //LogIn()
+                            UserEvents()
                         }
                 }
             }

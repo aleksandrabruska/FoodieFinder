@@ -52,11 +52,23 @@ class UserFBService {
             .await()
     }
 
+    suspend fun addEvent(userId: String, toAdd: String, owner: Boolean) {
+        db.collection(USERS_COLLECTION_NAME)
+            .document(userId)
+            .update("events." + toAdd, owner)
+    }
+
     suspend fun removeFriend(userId: String, toRemove: String) {
         db.collection(USERS_COLLECTION_NAME)
             .document(userId)
             .update("friends", FieldValue.arrayRemove(toRemove))
             .await()
+    }
+
+    suspend fun removeEvent(userId: String, toRemove: String) {
+        db.collection(USERS_COLLECTION_NAME)
+            .document(userId)
+            .update("events."+toRemove, FieldValue.delete())
     }
 
     suspend fun getUserByEmail(email: String): UserFB? {

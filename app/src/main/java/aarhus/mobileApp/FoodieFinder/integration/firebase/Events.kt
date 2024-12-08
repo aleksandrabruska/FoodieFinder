@@ -36,16 +36,12 @@ fun Events() {
     }
 
     Button(onClick = {
-        val event = EventFB(
-            "", "fancy burger", "12.02", ArrayList(listOf("janek", "dzbanek", "maniek")),
-            ArrayList(listOf("dzbanek")), ArrayList(listOf("maniek")), ArrayList(listOf("someid1", "someid2"))
-        )
+
 
         Log.v("EVENT", "cos innego")
 
         //service.saveEvent(event)
 
-        Log.v("EVENT", event.id)
 
     }) {Text("ADD")}
 

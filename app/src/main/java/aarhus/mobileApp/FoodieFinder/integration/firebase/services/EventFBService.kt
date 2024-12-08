@@ -23,10 +23,33 @@ class EventFBService {
         }
     }
 
-    fun saveEvent(ev: EventFB) {
-        db.collection(EVENTS_COLLECTION_NAME)
+    suspend fun saveEvent(ev: EventFB) : String{
+        val documentReference = db.collection(EVENTS_COLLECTION_NAME)
             .add(ev)
+            .await()
+        return documentReference.id
 
+    }
 
+    suspend fun getUsersEvents(id: String) : List<EventFB>{
+        return try {
+            val querySnapshot = db.collection(EVENTS_COLLECTION_NAME)
+                .whereArrayContains("participants", id)
+                .get()
+                .await()
+
+            querySnapshot.documents.mapNotNull { document ->
+                document.toObject<EventFB>()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun removeEvent(eventId: String) {
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(eventId)
+            .delete()
+            .await()
     }
 }

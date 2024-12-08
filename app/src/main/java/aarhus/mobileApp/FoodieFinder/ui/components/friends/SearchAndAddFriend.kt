@@ -19,22 +19,21 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
 
     email.value = inputField("Enter your friends' email", true, email)
 
-    if (email.value in user.friends) {
-        return null
-    }
+
 
     Button(onClick = {
-        scope.launch {
-            found.value = service.getUserByEmail(email.value)
+        if (email.value !in user.friends || email.value !in friendsState) {
+            scope.launch {
+                found.value = service.getUserByEmail(email.value)
 
-            found.value?.let {
-                service.addFriend(user.id, it.email)
-                friendsState.add(it.email)
+                found.value?.let {
+                    service.addFriend(user.id, it.email)
+                    friendsState.add(it.email)
+                }
+
             }
-
-            email.value = ""
-
         }
+        email.value = ""
     }) {
         Text("Add!")
     }
