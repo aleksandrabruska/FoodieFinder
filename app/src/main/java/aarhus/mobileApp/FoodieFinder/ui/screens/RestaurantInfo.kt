@@ -68,7 +68,7 @@ fun RestaurantInfo(restaurant: Restaurant, details: () -> Unit, navigate: () -> 
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
-                border = BorderStroke(1.dp, Color.Black),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
             ) {
                 Column(modifier = Modifier.scrollable(orientation = Orientation.Vertical,
                     state = rememberScrollableState { delta ->

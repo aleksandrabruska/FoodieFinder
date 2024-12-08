@@ -19,7 +19,8 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    //primary = Purple40,
+    primary = Melon,
     secondary = PurpleGrey40,
     tertiary = Pink40,
 
@@ -35,11 +36,11 @@ private val LightColorScheme = lightColorScheme(
 
     //overriding
     //surface = Tangeringe,
-    onPrimary = Almond,
-    surface = Linen,
+    onPrimary = SeashellDark,
+    surface = SeashellDark,
     background = Seashell,
-    onSurface = Sepia,
-    // onBackground = Almond
+    onSurface = Salmon,
+    onBackground = Salmon
     //onSurface = Tangeringe
 
 )

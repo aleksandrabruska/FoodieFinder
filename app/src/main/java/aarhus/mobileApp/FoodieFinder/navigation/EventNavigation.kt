@@ -5,9 +5,12 @@ import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
+import aarhus.mobileApp.FoodieFinder.ui.screens.MainScreen
 import aarhus.mobileApp.FoodieFinder.ui.screens.MyEvents
+import aarhus.mobileApp.FoodieFinder.ui.screens.MyFriends
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetailedInfo
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantInfo
+import aarhus.mobileApp.FoodieFinder.ui.screens.addFriend
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,6 +30,7 @@ import android.location.Location
 
 
 //TODO - add loading
+//TODO - API call later?
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
 fun EventNavigation(mapsService: MapsService){
@@ -85,11 +89,28 @@ fun EventNavigation(mapsService: MapsService){
 
         NavHost(
             navController = controller,
-            startDestination = "event/0"
+            startDestination = "main_screen"
         ) {
-            composable("my_events"){
-                MyEvents()
+            composable("main_screen"){
+                MainScreen(
+                    friendsClicked = {controller.navigate("my_friends")},
+                    eventsClicked = {controller.navigate("my_events")}
+                )
             }
+            composable("add_friend"){
+                addFriend()
+            }
+            composable("my_friends"){
+                MyFriends(
+                    onAddFriendClicked = {controller.navigate("add_friend")},
+                    onBackClicked = {controller.navigate("main_screen")}
+                )
+            }
+            composable("my_events"){
+                MyEvents({},
+                    onBackClicked = {controller.navigate("main_screen")})
+            }
+
             composable("event/{id}"){
                 var event = Event("Mary birthday", emptyList(), emptyList())
                 EventView(event, {controller.navigate("venue/0")},

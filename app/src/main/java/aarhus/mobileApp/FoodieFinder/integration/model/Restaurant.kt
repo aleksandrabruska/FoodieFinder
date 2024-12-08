@@ -21,7 +21,4 @@ data class Restaurant(
     var lat: Double? = null,
     var lng: Double? = null,
     var comments: List<Comment>? = null
-    //reviews?
-    //photo?
-
 )
