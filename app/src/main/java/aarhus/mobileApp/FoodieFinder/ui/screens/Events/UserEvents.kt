@@ -1,21 +1,18 @@
-package aarhus.mobileApp.FoodieFinder.ui.screens
+package aarhus.mobileApp.FoodieFinder.ui.screens.Events
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
-import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
-import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
-import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
 import aarhus.mobileApp.FoodieFinder.ui.components.events.ManageEvents
 import android.util.Log
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun UserEvents() {
@@ -25,9 +22,7 @@ fun UserEvents() {
 
     val userService = remember { UserFBService() }
 
-
     LaunchedEffect(key1 = Unit) {
-
         // TODO HARD CODED
         try {
 
@@ -38,7 +33,21 @@ fun UserEvents() {
         }
     }
 
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "manageEvents") {
+        composable("manageEvents") {
+            ManageEvents(user.value, scope, navController)
+        }
+        composable("enterEvent/{eventName}") { backStackEntry ->
+            val eventID = backStackEntry.arguments?.getString("eventName") ?: "Unknown Event"
+            EnterEventScreen(eventID, navController, scope, user.value)
+        }
+    }
+    /*
     Column {
         ManageEvents(user.value, scope)
     }
+
+     */
 }
