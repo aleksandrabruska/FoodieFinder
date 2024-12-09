@@ -24,41 +24,17 @@ fun addFriend() {
     val authService = remember{ AuthService() }
     val scope = rememberCoroutineScope()
 
-    var models by remember { mutableStateOf<List<UserFB>>(emptyList()) }
-    val userService = remember {UserFBService()}
-
     LaunchedEffect(key1 = Unit) {
-        models = userService.getUsers()
-
         // TODO HARD CODED
         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-
     }
 
     Column () {
         user.value?.let { user ->
-            val friendsState = remember { mutableStateListOf(*user.friends.toTypedArray()) }
-
-            UserDetails(user)
-
-            SearchAndAddFriend(scope, user, friendsState)
-
-            models.forEach {
-                friend(userService, scope, user, it, friendsState)
-
-            }
+            SearchAndAddFriend(scope, user)
         }
 
 
     }
 
-}
-
-@Composable
-fun friend(service: UserFBService, scope: CoroutineScope, user: UserFB, model: UserFB, friendsState: MutableList<String>) {
-    if(model.email in friendsState) {
-        Text("\nYour friends")
-        UserDetails(model)
-        ManageFriendButton(service, scope, user, model, friendsState)
-    }
 }

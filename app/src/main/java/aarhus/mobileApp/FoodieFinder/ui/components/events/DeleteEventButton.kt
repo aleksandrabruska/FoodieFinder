@@ -19,7 +19,6 @@ fun DeleteEventButton(event: EventFB, scope: CoroutineScope, events: MutableList
 
     Button(onClick = {
         scope.launch {
-
             event.participants.forEach { userId ->
                 userService.removeEvent(userId, event.id)
             }

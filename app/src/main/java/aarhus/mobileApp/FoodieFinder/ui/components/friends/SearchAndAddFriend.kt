@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: MutableList<String>) : UserFB? {
+fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB) {
     val email = remember { mutableStateOf<String>("") }
     val service = remember {UserFBService()}
     val found = remember {mutableStateOf<UserFB?>(null)}
@@ -21,17 +21,15 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
 
 
     Button(onClick = {
-        if (email.value !in user.friends || email.value !in friendsState) {
+        if (email.value !in user.friends) {
             scope.launch {
                 found.value = service.getUserByEmail(email.value)
 
                 found.value?.let { friendToAdd ->
                     service.addFriend(friendToAdd.id, user.email) // add to theirs friends list myself
                     service.addFriend(user.id, friendToAdd.email) // add to my friends list them
-                    friendsState.add(friendToAdd.email)
                 }
                 email.value = ""
-
 
             }
         }
@@ -39,6 +37,4 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
         Text("Add!")
     }
 
-
-    return found.value
 }

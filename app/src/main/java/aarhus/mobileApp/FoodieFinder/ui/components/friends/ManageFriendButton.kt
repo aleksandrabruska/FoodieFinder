@@ -5,32 +5,16 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun ManageFriendButton(service: UserFBService, scope: CoroutineScope, user: UserFB, model: UserFB, friendsState: MutableList<String>) {
-    if (user.id == model.id)
-        return
+fun ManageFriendButton(text: String, action: () -> Unit) {
 
-    val added = model.email in friendsState
-
-    Button(onClick = {
-        scope.launch {
-            if (!added) {
-                service.addFriend(user.id, model.email)
-                friendsState.add(model.email)
-            } else {
-                service.removeFriend(user.id, model.email) // remove from my list
-                service.removeFriend(model.id, user.email) // remove from their list
-                friendsState.remove(model.email)
-            }
-        }
-    }) {
-        if (!added) {
-            Text("ADD")
-        } else {
-            Text("REMOVE")
-        }
+    Button(onClick =
+        action
+    ) {
+        Text(text)
     }
 }

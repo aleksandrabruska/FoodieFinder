@@ -100,8 +100,6 @@ class UserFBService {
     }
 
 
-
-
     // events
 
     suspend fun removeEvent(userId: String, toRemove: String) {

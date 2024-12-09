@@ -70,8 +70,8 @@ class MainActivity : ComponentActivity() {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                //val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                //startActivity(intent)
+                val intent = Intent(this@MainActivity, EventActivity::class.java)
+                startActivity(intent)
             }
 
             FoodieFinderTheme {
@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
                             //addFriend()
                             //Register()
                             //LogIn()
-                            UserEvents()
+                            //UserEvents()
                         }
                 }
             }

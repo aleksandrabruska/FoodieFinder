@@ -65,13 +65,13 @@ fun EventNavigation(mapsService: MapsService){
         }
         currentLocation = mapsService.getCurrentLocation()
         if(currentLocation != null) {
-            restaurants.value =
+            /*restaurants.value =
                 restaurantsService.get(
                     currentLocation!!.latitude,
                     currentLocation!!.longitude,
                     maxRestNum,
                     1000
-                )
+                )*/
             isLoading.value = false
         }
     }
@@ -108,7 +108,8 @@ fun EventNavigation(mapsService: MapsService){
             }
             composable("my_events"){
                 MyEvents({},
-                    onBackClicked = {controller.navigate("main_screen")})
+                    onBackClicked = {controller.navigate("main_screen")},
+                controller)
             }
 
             composable("event/{id}"){

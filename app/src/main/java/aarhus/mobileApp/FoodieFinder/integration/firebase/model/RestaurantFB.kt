@@ -7,5 +7,4 @@ data class RestaurantFB(
     var number_of_votes: Int = 0,
     var name: String = "",
     var user_ids: ArrayList<String> = ArrayList()
-
     )
