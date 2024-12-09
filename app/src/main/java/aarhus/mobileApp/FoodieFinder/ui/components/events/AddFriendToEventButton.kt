@@ -28,8 +28,8 @@ fun AddFriendToEventButton(scope: CoroutineScope, user: UserFB, event: EventFB, 
 
             scope.launch {
                 try {
-                    eventService.addUserToEvent(event, user.id, false)
-                    userService.addEvent(user.id, event.id, false)
+                    eventService.addUserToEvent(event, user.id)
+                    userService.addEvent(user.id, event.id)
                     nonParticipants.remove(user)
                     participants.add(user)
                 } catch (e: Exception) {

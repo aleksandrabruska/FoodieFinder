@@ -29,13 +29,13 @@ fun AddEventButton(user: UserFB, scope: CoroutineScope, events: MutableList<Even
       scope.launch {
           val eventToAdd = EventFB("", name.value, date.value, user.id, arrayListOf(user.id))
           val eventID = eventService.saveEvent(eventToAdd)
-          userFBService.addEvent(user.id, eventID, true)
+          userFBService.addEvent(user.id, eventID)
 
           name.value = ""
           date.value = ""
 
           eventToAdd.id = eventID
-          events.   add(eventToAdd)
+          events.add(eventToAdd)
       }
     } ){
       Text("Add")

@@ -17,12 +17,51 @@ class UserFBService {
     }
 
     suspend fun getUsers(): List<UserFB> {
-        val users = db.collection(UserFBService.USERS_COLLECTION_NAME).get().await()
+        val users = db.collection(USERS_COLLECTION_NAME).get().await()
 
         return users.documents.mapNotNull { document ->
             document.toObject<UserFB>()
         }
     }
+
+    fun saveUser(user: UserFB) {
+        db.collection(USERS_COLLECTION_NAME)
+            .document(user.id)
+            .set(user)
+
+    }
+
+    suspend fun getUser(id: String): UserFB? {
+        if (!id.isNotBlank()) {
+            return null
+        }
+        var userDocument = db.collection(USERS_COLLECTION_NAME)
+            .document(id)
+            .get()
+            .await()
+            .toObject<UserFB>()
+
+        return userDocument
+    }
+
+    suspend fun getUserByEmail(email: String): UserFB? {
+        if (email.isBlank()) {
+            return null
+        }
+
+        val querySnapshot = db.collection(USERS_COLLECTION_NAME)
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+
+        return if (querySnapshot.isEmpty) {
+            null
+        } else {
+            querySnapshot.documents.firstOrNull()?.toObject<UserFB>()
+        }
+    }
+
+    // friends
 
     suspend fun getFriendsOfAUser(userId: String): List<UserFB> {
         return try {
@@ -46,38 +85,10 @@ class UserFBService {
 
     }
 
-    fun saveUser(user: UserFB) {
-        db.collection(USERS_COLLECTION_NAME)
-            .document(user.id)
-            .set(user)
-
-    }
-
-    suspend fun getUser(id: String): UserFB? {
-
-        if (!id.isNotBlank()) {
-            return null
-        }
-        var userDocument = db.collection(USERS_COLLECTION_NAME)
-            .document(id)
-            .get()
-            .await()
-            .toObject<UserFB>()
-
-        return userDocument
-    }
-
     suspend fun addFriend(userId: String, toAdd: String) {
         db.collection(USERS_COLLECTION_NAME)
             .document(userId)
             .update("friends", FieldValue.arrayUnion(toAdd))
-            .await()
-    }
-
-    suspend fun addEvent(userId: String, toAdd: String, owner: Boolean) {
-        db.collection(USERS_COLLECTION_NAME)
-            .document(userId)
-            .update("events." + toAdd, owner)
             .await()
     }
 
@@ -88,29 +99,24 @@ class UserFBService {
             .await()
     }
 
+
+
+
+    // events
+
     suspend fun removeEvent(userId: String, toRemove: String) {
         db.collection(USERS_COLLECTION_NAME)
             .document(userId)
-            .update("events."+toRemove, FieldValue.delete())
-    }
-
-    suspend fun getUserByEmail(email: String): UserFB? {
-        if (email.isBlank()) {
-            return null
-        }
-
-        val querySnapshot = db.collection(USERS_COLLECTION_NAME)
-            .whereEqualTo("email", email)
-            .get()
+            .update("events", FieldValue.arrayRemove(toRemove))
             .await()
-
-        return if (querySnapshot.isEmpty) {
-            null
-        } else {
-            querySnapshot.documents.firstOrNull()?.toObject<UserFB>()
-        }
     }
 
+    suspend fun addEvent(userId: String, toAdd: String) {
+        db.collection(USERS_COLLECTION_NAME)
+            .document(userId)
+            .update("events", FieldValue.arrayUnion(toAdd))
+            .await()
+    }
 
 
 }

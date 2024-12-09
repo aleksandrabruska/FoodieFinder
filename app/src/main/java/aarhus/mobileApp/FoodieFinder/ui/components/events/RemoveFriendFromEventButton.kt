@@ -19,10 +19,7 @@ fun RemoveFriendFromEventButton(scope: CoroutineScope, user: UserFB, event: Even
     val userService = remember { UserFBService() }
 
 
-    Column() {
         Text(user.name)
-    }
-    Column {
         Button(onClick = {
 
             scope.launch {
@@ -38,8 +35,8 @@ fun RemoveFriendFromEventButton(scope: CoroutineScope, user: UserFB, event: Even
                 }
             }
         }) {
-            Text("+")
+            Text("-")
         }
 
-    }
+
 }

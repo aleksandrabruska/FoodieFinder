@@ -25,9 +25,10 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
             scope.launch {
                 found.value = service.getUserByEmail(email.value)
 
-                found.value?.let {
-                    service.addFriend(user.id, it.email)
-                    friendsState.add(it.email)
+                found.value?.let { friendToAdd ->
+                    service.addFriend(friendToAdd.id, user.email) // add to theirs friends list myself
+                    service.addFriend(user.id, friendToAdd.email) // add to my friends list them
+                    friendsState.add(friendToAdd.email)
                 }
                 email.value = ""
 

@@ -34,28 +34,18 @@ class EventFBService {
 
     }
 
-    suspend fun addUserToEvent(ev: EventFB, toAdd: String, owner: Boolean) {
-        try {
-            db.collection(EVENTS_COLLECTION_NAME).document(ev.id)
-                .get()
-                .await()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        }
+    suspend fun addUserToEvent(ev: EventFB, toAdd: String) {
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(ev.id)
+            .update("participants", FieldValue.arrayUnion(toAdd))
+            .await()
     }
 
     suspend fun removeUserFromEvent(ev: EventFB, toRemove: String) {
-        try {
-            db.collection(EVENTS_COLLECTION_NAME).document(ev.id)
-                .update("participants.$toRemove", FieldValue.delete()).await()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw e
-        }
-
-
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(ev.id)
+            .update("participants", FieldValue.arrayRemove(toRemove))
+            .await()
     }
 
     suspend fun getEventByID(id: String) : EventFB? {

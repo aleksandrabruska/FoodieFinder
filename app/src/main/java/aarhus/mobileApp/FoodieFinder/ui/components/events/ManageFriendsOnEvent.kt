@@ -32,12 +32,18 @@ fun ManageFriendsOnEvent(scope: CoroutineScope, event: EventFB, user: UserFB, is
     LaunchedEffect(key1 = Unit) {
         friends.addAll(userService.getFriendsOfAUser(user.id))
 
+        event.participants.forEach { userID ->
+
+            userService.getUser(userID)?.let { participant ->
+                participants.add(participant)
+            }
+        }
+
         friends.forEach { friend ->
-            if(event.id in friend.events)
-                participants.add(friend)
-            else
+            if(event.id !in friend.events)
                 nonParticipants.add(friend)
         }
+
     }
 
     Spacer(modifier = Modifier.height(20.dp))

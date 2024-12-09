@@ -21,7 +21,8 @@ fun ManageFriendButton(service: UserFBService, scope: CoroutineScope, user: User
                 service.addFriend(user.id, model.email)
                 friendsState.add(model.email)
             } else {
-                service.removeFriend(user.id, model.email)
+                service.removeFriend(user.id, model.email) // remove from my list
+                service.removeFriend(model.id, user.email) // remove from their list
                 friendsState.remove(model.email)
             }
         }

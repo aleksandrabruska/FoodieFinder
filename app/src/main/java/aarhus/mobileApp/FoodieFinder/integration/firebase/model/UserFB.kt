@@ -8,5 +8,5 @@ data class UserFB(
     var name: String = "",
     val email: String = "",
     val friends: ArrayList<String> = ArrayList(),
-    val events: Map<String, Boolean> = mapOf<String, Boolean>()
+    val events: ArrayList<String> = ArrayList()
 )
