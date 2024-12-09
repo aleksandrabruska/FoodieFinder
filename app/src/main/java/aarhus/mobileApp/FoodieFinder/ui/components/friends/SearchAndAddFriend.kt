@@ -17,8 +17,7 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
     val service = remember {UserFBService()}
     val found = remember {mutableStateOf<UserFB?>(null)}
 
-    email.value = inputField("Enter your friends' email", true, email)
-
+    inputField("Enter your friends' email", true, email)
 
 
     Button(onClick = {
@@ -30,10 +29,11 @@ fun SearchAndAddFriend(scope: CoroutineScope, user: UserFB, friendsState: Mutabl
                     service.addFriend(user.id, it.email)
                     friendsState.add(it.email)
                 }
+                email.value = ""
+
 
             }
         }
-        email.value = ""
     }) {
         Text("Add!")
     }

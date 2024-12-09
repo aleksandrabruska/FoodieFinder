@@ -31,7 +31,7 @@ fun addFriend() {
         models = userService.getUsers()
 
         // TODO HARD CODED
-        user.value = authService.logIn("jas@gmail.pl", "aaaaaaaa")
+        user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
 
     }
 

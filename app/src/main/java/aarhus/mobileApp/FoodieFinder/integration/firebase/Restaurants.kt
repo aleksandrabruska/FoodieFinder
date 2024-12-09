@@ -33,13 +33,13 @@ fun Restaurants() {
                 val a = RestaurantFB(
                     ("someID" + Random.nextInt(0, 1000000)),
                     Random.nextInt(0, 4),
-                    arrayListOf(
+                    "fancy burger " + Random.nextInt(0, 100).toString(),
+                            arrayListOf(
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
                         "user" + Random.nextInt(0, 100).toString(),
-                        ),
-                    "fancy burger " + Random.nextInt(0, 100).toString()
+                        )
                 )
                 service.saveRestaurant(a)
             }
@@ -55,6 +55,6 @@ fun Restaurant(model: RestaurantFB) {
         Text("place Id: " + model.placeID)
         Text("number of votes: " + model.number_of_votes)
         Text("name: " + model.name)
-        model.user_emails.forEach {Text(it)}
+        model.user_ids.forEach {Text(it)}
     }
 }

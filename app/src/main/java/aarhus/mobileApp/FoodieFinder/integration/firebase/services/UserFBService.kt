@@ -24,6 +24,28 @@ class UserFBService {
         }
     }
 
+    suspend fun getFriendsOfAUser(userId: String): List<UserFB> {
+        return try {
+            val documentSnapshot = db.collection(USERS_COLLECTION_NAME)
+                .document(userId)
+                .get()
+                .await()
+
+            val friendEmails = documentSnapshot.get("friends") as? List<String> ?: emptyList()
+
+            friendEmails.mapNotNull { friendEmail ->
+                try {
+                    getUserByEmail(friendEmail)
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+
+    }
+
     fun saveUser(user: UserFB) {
         db.collection(USERS_COLLECTION_NAME)
             .document(user.id)
@@ -56,6 +78,7 @@ class UserFBService {
         db.collection(USERS_COLLECTION_NAME)
             .document(userId)
             .update("events." + toAdd, owner)
+            .await()
     }
 
     suspend fun removeFriend(userId: String, toRemove: String) {

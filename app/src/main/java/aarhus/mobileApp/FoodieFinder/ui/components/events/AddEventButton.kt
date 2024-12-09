@@ -35,7 +35,7 @@ fun AddEventButton(user: UserFB, scope: CoroutineScope, events: MutableList<Even
           date.value = ""
 
           eventToAdd.id = eventID
-          events.add(eventToAdd)
+          events.   add(eventToAdd)
       }
     } ){
       Text("Add")

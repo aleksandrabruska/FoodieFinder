@@ -12,13 +12,15 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun ManageEvents(user: UserFB?, scope: CoroutineScope) {
+fun ManageEvents(user: UserFB?, scope: CoroutineScope, navController: NavController) {
     val eventService = remember{EventFBService()}
 
     val events = remember { mutableStateListOf<EventFB>() }
+
 
     user?.let { user ->
         LaunchedEffect(key1 = Unit) {
@@ -31,7 +33,7 @@ fun ManageEvents(user: UserFB?, scope: CoroutineScope) {
 
             events.forEach { event ->
                 Row {
-                    EnterEventButton(event.name)
+                    EnterEventButton(event, navController)
                     if(event.ownerId == user.id)
                         DeleteEventButton(event, scope, events)
                 }

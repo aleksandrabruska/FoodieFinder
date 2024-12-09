@@ -9,6 +9,9 @@ import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 
+
+
+
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.MainScreen
 import aarhus.mobileApp.FoodieFinder.ui.screens.MyFriends
@@ -65,21 +68,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val scope = rememberCoroutineScope()
 
             scope.launch {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                val intent = Intent(this@MainActivity, EventActivity::class.java)
-                startActivity(intent)
+                //val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+                //startActivity(intent)
             }
 
-            FoodieFinderTheme(dynamicColor = false) {
+            FoodieFinderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize())
                     { innerPadding ->
-                        //MyFriends({})
                         Box(modifier = Modifier.padding(innerPadding)) {
                             //Greeting(
                             //    name = "Android",
@@ -92,12 +93,11 @@ class MainActivity : ComponentActivity() {
                             //var event = Event("Eleonora birthday", list, emptyList())
                             //EventView(event)
 
-                            //MyFriends({})
+
                             //addFriend()
                             //Register()
                             //LogIn()
-                            //UserEvents()
-
+                            UserEvents()
                         }
                 }
             }
