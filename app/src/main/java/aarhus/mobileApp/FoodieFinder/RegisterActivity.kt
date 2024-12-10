@@ -26,7 +26,7 @@ class RegisterActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize())
                 { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        Register()
+                        //Register()
 
                     }
                 }

@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun ManageEvents(user: UserFB?, scope: CoroutineScope, navController: NavController) {
+fun ManageEvents(user: UserFB?, onEnterClicked: (String) -> Unit/*, scope: CoroutineScope, navController: NavController*/) {
     val eventService = remember{EventFBService()}
 
     val events = remember { mutableStateListOf<EventFB>() }
@@ -28,14 +28,14 @@ fun ManageEvents(user: UserFB?, scope: CoroutineScope, navController: NavControl
         }
 
         Column {
-            AddEventButton(user, scope, events)
+            //AddEventButton(user, scope, events)
             Text("")
 
             events.forEach { event ->
                 Row {
-                    EnterEventButton(event, navController)
-                    if(event.ownerId == user.id)
-                        DeleteEventButton(event, scope, events)
+                    EnterEventButton(event, onEnterClicked/*, navController*/)
+                    //if(event.ownerId == user.id)
+                        //DeleteEventButton(event, scope, events)
                 }
             }
 

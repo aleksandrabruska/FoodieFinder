@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun ManageFriendsOnEvent(scope: CoroutineScope, event: EventFB, user: UserFB, isOwner: Boolean) {
+fun ManageFriendsOnEvent(/*scope: CoroutineScope,*/ event: EventFB, user: UserFB, isOwner: Boolean) {
 
     val friends = remember { mutableStateListOf<UserFB>() }
     val userService = remember { UserFBService() }
@@ -47,7 +47,7 @@ fun ManageFriendsOnEvent(scope: CoroutineScope, event: EventFB, user: UserFB, is
     }
 
     Spacer(modifier = Modifier.height(20.dp))
-    ManageParticipants(scope, user, event, nonParticipants, participants, isOwner)
+    ManageParticipants(/*scope, */user, event, nonParticipants, participants, isOwner)
     //every one who is not participating, but is a friend
 
 

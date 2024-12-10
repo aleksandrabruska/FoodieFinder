@@ -22,7 +22,7 @@ class LogInActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize())
                 { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        LogIn()
+                        //LogIn()
 
                     }
                 }

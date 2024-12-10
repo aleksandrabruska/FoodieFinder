@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun Register() {
+fun Register(navigate: () -> Unit) {
     val authService = remember{AuthService()}
     val userService = remember{UserFBService()}
     val scope = rememberCoroutineScope()
@@ -47,6 +47,7 @@ fun Register() {
 
                         successMessage.value = "Registered!"
                         errorMessage.value = null
+                        navigate()
 
                     } catch (e: Exception) {
                         errorMessage.value = e.message

@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun EnterEventButton(event: EventFB, navController: NavController) {
-    Button(onClick = {
-        navController.navigate("enterEvent/${event.id}")
-    }) {
+fun EnterEventButton(event: EventFB/*, navController: NavController*/, onEnterClicked: (id:String) -> Unit ) {
+    Button(onClick = {onEnterClicked(event.id)}
+        //navController.navigate("enterEvent/${event.id}")
+    ) {
         Text(event.name)
     }
 }

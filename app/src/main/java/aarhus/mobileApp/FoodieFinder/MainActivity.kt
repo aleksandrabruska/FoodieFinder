@@ -6,6 +6,7 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.Events
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Restaurants
 import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
+import aarhus.mobileApp.FoodieFinder.navigation.EventNavigation
 import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
@@ -32,6 +33,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.rememberCoroutineScope
+import com.google.android.gms.location.LocationServices
 import io.ktor.client.HttpClient
 import kotlinx.serialization.SerialName
 import io.ktor.client.engine.cio.*
@@ -44,9 +46,11 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.howard.simplemapapp.intergration.google.MapsService
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    private val locationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     /*public val apiKey = "${BuildConfig.FOURSQUARE_API_KEY}"
     companion object{
         public const val BASE_URL = "https://api.foursquare.com/v3/places/search"
@@ -70,14 +74,15 @@ class MainActivity : ComponentActivity() {
                 //val intent = Intent(this@MainActivity, MapsActivity::class.java)
                 //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 //startActivity(intent)
-                val intent = Intent(this@MainActivity, EventActivity::class.java)
-                startActivity(intent)
+                //val intent = Intent(this@MainActivity, LogInActivity::class.java)
+               ///startActivity(intent)
             }
 
-            FoodieFinderTheme {
+            FoodieFinderTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize())
                     { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
+                            EventNavigation(MapsService(locationClient))
                             //Greeting(
                             //    name = "Android",
                             //    modifier = Modifier.padding(innerPadding)

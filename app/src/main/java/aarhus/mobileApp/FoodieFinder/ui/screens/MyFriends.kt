@@ -31,9 +31,9 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun MyFriends(onAddFriendClicked: () -> Unit, onBackClicked: () -> Unit) {
+fun MyFriends(currentUser: UserFB?, onAddFriendClicked: () -> Unit, onBackClicked: () -> Unit) {
 
-    val user = remember { mutableStateOf<UserFB?>(null) }
+    val user = remember { mutableStateOf<UserFB?>(currentUser) }
     val authService = remember{ AuthService() }
 
     val friends = remember { mutableStateOf<List<UserFB>>(emptyList()) }
@@ -50,7 +50,7 @@ fun MyFriends(onAddFriendClicked: () -> Unit, onBackClicked: () -> Unit) {
 
     LaunchedEffect(key1 = Unit) {
         // TODO HARD CODED
-        user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
+        //  user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
 
         refresh()
     }

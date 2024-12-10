@@ -1,13 +1,21 @@
 package aarhus.mobileApp.FoodieFinder.navigation
 
 import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
+import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
+import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
+import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.Loader
+import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
 import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
+import aarhus.mobileApp.FoodieFinder.ui.screens.Events.EnterEventScreen
+import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
+import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.MainScreen
 import aarhus.mobileApp.FoodieFinder.ui.screens.MyEvents
 import aarhus.mobileApp.FoodieFinder.ui.screens.MyFriends
+import aarhus.mobileApp.FoodieFinder.ui.screens.Register
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetailedInfo
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantInfo
 import aarhus.mobileApp.FoodieFinder.ui.screens.addFriend
@@ -27,22 +35,30 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.howard.simplemapapp.intergration.google.MapsService
 import android.location.Location
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 
 
-//TODO - add loading
+//TODO - repair loading
 //TODO - API call later?
+//TODO - repair when wrong password!
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
 fun EventNavigation(mapsService: MapsService){
     val restaurantsService = remember { KtorRestaurantsService() }
-    val isLoading = remember { mutableStateOf(true) }
+    val isLoading = remember { mutableStateOf(false) }
     val restaurants = remember { mutableStateOf<List<Restaurant>>(emptyList()) }
     val controller = rememberNavController()
-
+    var currentUser = remember { mutableStateOf<UserFB?>(null) }
     val context = LocalContext.current
     var currentLocation : Location?= null
 
     val maxRestNum = 10;
+
+    val authService = remember{ AuthService() }
+    val scope = rememberCoroutineScope()
 
     val granted = remember{
         mutableStateOf(
@@ -58,8 +74,16 @@ fun EventNavigation(mapsService: MapsService){
         granted.value = isGranted
     }
 
-    LaunchedEffect(Unit) {
-        isLoading.value = true
+    var isLoggedIn by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            controller.navigate("main_screen")
+        } else {
+            controller.navigate("login")
+        }
+        isLoading.value = false
         if(!granted.value){
             launcher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
@@ -74,6 +98,8 @@ fun EventNavigation(mapsService: MapsService){
                 )*/
             isLoading.value = false
         }
+
+
     }
 
     DisposableEffect(Unit) {
@@ -89,8 +115,26 @@ fun EventNavigation(mapsService: MapsService){
 
         NavHost(
             navController = controller,
-            startDestination = "main_screen"
+            startDestination = "login"
         ) {
+            composable("register"){
+                Register(
+                    navigate = {controller.navigate("login")}
+                )
+            }
+            composable("login"){
+                LogIn(
+                    navigateToHome = {controller.navigate("main_screen")},
+                    login = {email, password ->
+                        //var user : UserFB? = null
+                        scope.launch {
+                            currentUser.value = authService.logIn(email, password)
+                            isLoggedIn = (currentUser.value != null)
+                        }
+                        currentUser.value.let{it}
+                    }
+                )
+            }
             composable("main_screen"){
                 MainScreen(
                     friendsClicked = {controller.navigate("my_friends")},
@@ -98,18 +142,46 @@ fun EventNavigation(mapsService: MapsService){
                 )
             }
             composable("add_friend"){
-                addFriend()
+                addFriend(currentUser.value)
             }
             composable("my_friends"){
                 MyFriends(
+                    currentUser.value,
                     onAddFriendClicked = {controller.navigate("add_friend")},
                     onBackClicked = {controller.navigate("main_screen")}
                 )
             }
             composable("my_events"){
-                MyEvents({},
+                UserEvents(
+                    currentUser.value,
                     onBackClicked = {controller.navigate("main_screen")},
-                controller)
+                    onAddClicked = {controller.navigate("add_event")},
+                    onEnterClicked = { controller.navigate("event_details/$it") })
+                //MyEvents({},
+                //    onBackClicked = {controller.navigate("main_screen")}, action = {})
+            }
+            composable("add_event"){
+                /*val user = remember { mutableStateOf<UserFB?>(null) }
+                val authService = remember{ AuthService() }
+                LaunchedEffect(key1 = Unit) {
+                    // TODO HARD CODED
+                    user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
+                    Log.v("Null?", (user.value == null).toString())
+                }*/
+                //Log.v("Null?", (user.value == null).toString())
+                currentUser.value?.let {AddEventButton(currentUser.value!!)}
+
+            }
+            composable("event_details/{id}"){
+                val id = it.arguments?.getString("id") ?: ""
+                /*val user = remember { mutableStateOf<UserFB?>(null) }
+                val authService = remember{ AuthService() }
+                LaunchedEffect(key1 = Unit) {
+                    // TODO HARD CODED
+                        user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
+                }*/
+                EnterEventScreen(id, currentUser.value)
+
             }
 
             composable("event/{id}"){

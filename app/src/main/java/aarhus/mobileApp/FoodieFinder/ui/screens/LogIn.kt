@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LogIn() {
+fun LogIn(navigateToHome: () -> Unit, login: (String, String) -> UserFB?) {
     val email = remember { mutableStateOf<String>("") }
     val password = remember { mutableStateOf<String>("") }
 
@@ -40,8 +40,8 @@ fun LogIn() {
             onClick = {
                 scope.launch {
                     try {
-                        user.value = authService.logIn(email.value, password.value)
-
+                        //user.value = authService.logIn(email.value, password.value)
+                        user.value = login(email.value, password.value)
                         successMessage.value = "Logged in!"
                         errorMessage.value = null
                     }
@@ -66,6 +66,7 @@ fun LogIn() {
             Text("USERNAME: " + user.value!!.name)
             Text("EMAIL: " + user.value!!.email)
             Text("USER ID:" + user.value!!.id)
+            //navigateToHome()
         }
     }
 }

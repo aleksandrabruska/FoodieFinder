@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun EnterEventScreen(eventID: String, navController: NavController, scope: CoroutineScope, user: UserFB?) {
+fun EnterEventScreen(eventID: String,/*, navController: NavController, scope: CoroutineScope, */user: UserFB?) {
     val eventService = remember{ EventFBService() }
     val event = remember{ mutableStateOf<EventFB?>(null)}
     val isOwner = remember{mutableStateOf<Boolean>(false)}
@@ -38,12 +38,12 @@ fun EnterEventScreen(eventID: String, navController: NavController, scope: Corou
                     isOwner.value = true
 
                 EventDetails(eventFound, userEntered)
-                ManageFriendsOnEvent(scope, eventFound, userEntered, isOwner.value)
+                ManageFriendsOnEvent(/*scope,*/ eventFound, userEntered, isOwner.value)
 
             }
         }
 
-        Button(onClick = { navController.popBackStack() }) {
+        Button(onClick = { } /*navController.popBackStack() }*/) {
             Text("Back")
         }
     }

@@ -19,16 +19,16 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun addFriend() {
-    val user = remember { mutableStateOf<UserFB?>(null) }
+fun addFriend(currentUser: UserFB?) {
+    val user = remember { mutableStateOf<UserFB?>(currentUser) }
     val authService = remember{ AuthService() }
     val scope = rememberCoroutineScope()
-
+    /*
     LaunchedEffect(key1 = Unit) {
         // TODO HARD CODED
         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
     }
-
+*/
     Column () {
         user.value?.let { user ->
             SearchAndAddFriend(scope, user)
