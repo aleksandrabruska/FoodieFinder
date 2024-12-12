@@ -8,7 +8,6 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.navigation.EventNavigation
 import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
-import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
 
 

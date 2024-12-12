@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SuggestionsList(suggestions: List<String>, onAddClicked: () -> Unit){
     Box(    //to center the whole thing
-        modifier = Modifier.fillMaxSize(),
+        //modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier

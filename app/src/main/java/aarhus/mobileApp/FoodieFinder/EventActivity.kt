@@ -3,7 +3,6 @@ package aarhus.mobileApp.FoodieFinder
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.navigation.EventNavigation
-import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity

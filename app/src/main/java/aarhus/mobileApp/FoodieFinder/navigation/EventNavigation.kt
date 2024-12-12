@@ -8,7 +8,6 @@ import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
-import aarhus.mobileApp.FoodieFinder.ui.screens.EventView
 import aarhus.mobileApp.FoodieFinder.ui.screens.Events.EnterEventScreen
 import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
@@ -95,13 +94,13 @@ fun EventNavigation(mapsService: MapsService){
         }
         currentLocation = mapsService.getCurrentLocation()
         if(currentLocation != null) {
-            /*restaurants.value =
+            restaurants.value =
                 restaurantsService.get(
                     currentLocation!!.latitude,
                     currentLocation!!.longitude,
                     maxRestNum,
                     1000
-                )*/
+                )
             isLoading.value = false
         }
 
@@ -178,7 +177,7 @@ fun EventNavigation(mapsService: MapsService){
                     currentUser.value,
                     onBackClicked = {controller.navigate("main_screen")},
                     onAddClicked = {controller.navigate("add_event")},
-                    onEnterClicked = { controller.navigate("event_details/$it") })
+                    onEnterClicked = { controller.navigate("event_details/$it/0") })
                 //MyEvents({},
                 //    onBackClicked = {controller.navigate("main_screen")}, action = {})
             }
@@ -194,36 +193,39 @@ fun EventNavigation(mapsService: MapsService){
                 currentUser.value?.let {AddEventButton(currentUser.value!!)}
 
             }
-            composable("event_details/{id}"){
+            composable("event_details/{id}/{venueChosenID}"){
                 val id = it.arguments?.getString("id") ?: ""
+                val venueChosen = (it.arguments?.getString("venueChosenID") ?: "0")
                 /*val user = remember { mutableStateOf<UserFB?>(null) }
                 val authService = remember{ AuthService() }
                 LaunchedEffect(key1 = Unit) {
                     // TODO HARD CODED
                         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
                 }*/
-                EnterEventScreen(id, currentUser.value)
+                EnterEventScreen(id, currentUser.value, venueChosen,
+                    addRestaurantClicked = {controller.navigate("venue/0/$id")})
 
             }
-
+            /*
             composable("event/{id}"){
                 var event = Event("Mary birthday", emptyList(), emptyList())
                 EventView(event, {controller.navigate("venue/0")},
                     {controller.navigate("my_events")})
-            }
-            composable("venue/{num}") {
+            }*/
+            composable("venue/{num}/{eventID}") {
                 var actualRestNum = restaurants.value.size
                 val num = (it.arguments?.getString("num") ?: "0").toInt()
+                val event = (it.arguments?.getString("eventID") ?: "0")
                 val next: Int = (if(num < actualRestNum-1) (num+1) else 0)
                 val prev: Int = (if(num > 0) (num-1) else (actualRestNum-1))
                     Log.v("Next", next.toString())
                 Log.v("Prev", prev.toString())
                 RestaurantInfo(restaurants.value.get(num),
-                        {controller.navigate("venueDetails/$num")},
-                        {controller.navigate("venue/$next")},
-                        {controller.navigate("venue/$prev")},
-                        {controller.navigate("event/0")},
-                        {controller.navigate("event/0")})
+                        details = {controller.navigate("venueDetails/$num")},
+                        navigate = {controller.navigate("venue/$next")},
+                        navigateBack = {controller.navigate("venue/$prev")},
+                        check = {controller.navigate("event_details/$event/${restaurants.value.get(num).id}")},
+                        backHandler = {controller.navigate("event_details/$event/0")})
 
 
             }

@@ -6,6 +6,7 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBServic
 import aarhus.mobileApp.FoodieFinder.ui.components.events.EventDetails
 import aarhus.mobileApp.FoodieFinder.ui.components.events.ManageFriendsOnEvent
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.ManageFriendButton
+import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.SuggestionsList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +22,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun EnterEventScreen(eventID: String,/*, navController: NavController, scope: CoroutineScope, */user: UserFB?) {
+fun EnterEventScreen(eventID: String,user: UserFB?, newRestaurantId: String, addRestaurantClicked: () -> Unit) {
     val eventService = remember{ EventFBService() }
     val event = remember{ mutableStateOf<EventFB?>(null)}
     val isOwner = remember{mutableStateOf<Boolean>(false)}
@@ -36,10 +37,14 @@ fun EnterEventScreen(eventID: String,/*, navController: NavController, scope: Co
 
                 if (eventFound.ownerId == userEntered.id)
                     isOwner.value = true
-
-                EventDetails(eventFound, userEntered)
-                ManageFriendsOnEvent(/*scope,*/ eventFound, userEntered, isOwner.value)
-
+                Column {
+                    EventDetails(eventFound, userEntered)
+                    ManageFriendsOnEvent(/*scope,*/ eventFound, userEntered, isOwner.value)
+                    SuggestionsList(emptyList(), addRestaurantClicked)
+                    if(newRestaurantId != "0") {
+                        Text("Added " + newRestaurantId)
+                    }
+                }
             }
         }
 
