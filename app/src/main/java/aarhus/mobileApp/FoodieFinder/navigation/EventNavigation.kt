@@ -93,7 +93,7 @@ fun EventNavigation(mapsService: MapsService){
             launcher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
         currentLocation = mapsService.getCurrentLocation()
-        if(currentLocation != null) {
+        /*if(currentLocation != null) {
             restaurants.value =
                 restaurantsService.get(
                     currentLocation!!.latitude,
@@ -102,7 +102,7 @@ fun EventNavigation(mapsService: MapsService){
                     1000
                 )
             isLoading.value = false
-        }
+        }*/
 
 
     }
@@ -113,7 +113,7 @@ fun EventNavigation(mapsService: MapsService){
         }
     }
 
-    if(!isLoading.value) {
+    //if(!isLoading.value) {
         for (item in restaurants.value)
             Log.v("resaturant is:", item.name ?: "None")
 
@@ -177,7 +177,7 @@ fun EventNavigation(mapsService: MapsService){
                     currentUser.value,
                     onBackClicked = {controller.navigate("main_screen")},
                     onAddClicked = {controller.navigate("add_event")},
-                    onEnterClicked = { controller.navigate("event_details/$it/0") })
+                    onEnterClicked = { isLoading.value = true; controller.navigate("event_details/$it/0") })
                 //MyEvents({},
                 //    onBackClicked = {controller.navigate("main_screen")}, action = {})
             }
@@ -213,21 +213,43 @@ fun EventNavigation(mapsService: MapsService){
                     {controller.navigate("my_events")})
             }*/
             composable("venue/{num}/{eventID}") {
-                var actualRestNum = restaurants.value.size
-                val num = (it.arguments?.getString("num") ?: "0").toInt()
-                val event = (it.arguments?.getString("eventID") ?: "0")
-                val next: Int = (if(num < actualRestNum-1) (num+1) else 0)
-                val prev: Int = (if(num > 0) (num-1) else (actualRestNum-1))
+                LaunchedEffect(key1 = Unit) {
+                    isLoading.value = true
+                    if(currentLocation != null) {
+                        restaurants.value =
+                            restaurantsService.get(
+                                currentLocation!!.latitude,
+                                currentLocation!!.longitude,
+                                maxRestNum,
+                                1000
+                            )
+                    }
+                    isLoading.value = false
+                }
+                if(isLoading.value == false) {
+                    var actualRestNum = restaurants.value.size
+                    val num = (it.arguments?.getString("num") ?: "0").toInt()
+                    val event = (it.arguments?.getString("eventID") ?: "0")
+                    val next: Int = (if (num < actualRestNum - 1) (num + 1) else 0)
+                    val prev: Int = (if (num > 0) (num - 1) else (actualRestNum - 1))
                     Log.v("Next", next.toString())
-                Log.v("Prev", prev.toString())
-                RestaurantInfo(restaurants.value.get(num),
-                        details = {controller.navigate("venueDetails/$num")},
-                        navigate = {controller.navigate("venue/$next")},
-                        navigateBack = {controller.navigate("venue/$prev")},
-                        check = {controller.navigate("event_details/$event/${restaurants.value.get(num).id}")},
-                        backHandler = {controller.navigate("event_details/$event/0")})
+                    Log.v("Prev", prev.toString())
+                    RestaurantInfo(restaurants.value.get(num),
+                        details = { controller.navigate("venueDetails/$num") },
+                        navigate = { controller.navigate("venue/$next/$event") },
+                        navigateBack = { controller.navigate("venue/$prev/$event") },
+                        check = {
+                            controller.navigate(
+                                "event_details/$event/${
+                                    restaurants.value.get(
+                                        num
+                                    ).id
+                                }"
+                            )
+                        },
+                        backHandler = { controller.navigate("event_details/$event/0") })
 
-
+                }
             }
 
             composable("venueDetails/{num}"){
@@ -235,8 +257,8 @@ fun EventNavigation(mapsService: MapsService){
                 RestaurantDetailedInfo(restaurants.value.get(num).id!!)
             }
         }
-    }
-    else{
-        Loader()
-    }
+    //}
+    //else{
+    //    Loader()
+    //}
 }

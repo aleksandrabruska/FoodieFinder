@@ -64,6 +64,7 @@ class KtorRestaurantsService : RestaurantsService {
             "key" to apiKey
         )
         var restaurants = emptyList<Restaurant>()
+        Log.v("CALLING API", "GOOGLE PLACES API")
         return try {
             val response: HttpResponse = client.get(BASE_URL_LIST) {
                 url {
