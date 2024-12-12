@@ -25,7 +25,7 @@ class RestaurantFBService {
     }
 
     suspend fun saveRestaurant(res: RestaurantFB){
-        val a = db.collection(RESTAURANTS_COLLECTION_NAME)
+        db.collection(RESTAURANTS_COLLECTION_NAME)
             .add(res)
             .await()
     }

@@ -1,13 +1,13 @@
-package aarhus.mobileApp.FoodieFinder.ui.components.events
+package aarhus.mobileApp.FoodieFinder.ui.components.events.participants
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
+import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.AddFriendToEventButton
+import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.RemoveFriendFromEventButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,10 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ManageParticipants(/*scope: CoroutineScope,*/ user: UserFB, event: EventFB, nonParticipants: MutableList<UserFB>, participants: MutableList<UserFB>, isOwner: Boolean) {

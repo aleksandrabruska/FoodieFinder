@@ -5,17 +5,14 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.RestaurantFBService
-import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.events.EventDetails
-import aarhus.mobileApp.FoodieFinder.ui.components.events.ManageFriendsOnEvent
-import aarhus.mobileApp.FoodieFinder.ui.components.friends.ManageFriendButton
+import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.AddFriendToEventButton
+import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.ManageFriendsOnEvent
+import aarhus.mobileApp.FoodieFinder.ui.components.events.restaurants.AddRestaurantToEvent
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.SuggestionsList
-import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.validateAdditionOfRestaurantToEvent
-import android.annotation.SuppressLint
+import aarhus.mobileApp.FoodieFinder.ui.components.events.restaurants.validateAdditionOfRestaurantToEvent
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,22 +20,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String, addRestaurantClicked: () -> Unit) {
+fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String, newRestaurantName: String, addRestaurantClicked: () -> Unit) {
     val eventService = remember{ EventFBService() }
-    val restaurantService = remember {RestaurantFBService()}
     val event = remember{ mutableStateOf<EventFB?>(null)}
     val isOwner = remember{mutableStateOf<Boolean>(false)}
     val message = remember{mutableStateOf<String>("")}
     val scope = rememberCoroutineScope()
-    LaunchedEffect(key1 = Unit) {
-        event.value = eventService.getEventByID(eventID)
+    val trigger = remember { mutableStateOf(false) }
+
+    LaunchedEffect(trigger.value) {
+        scope.launch {
+            event.value = eventService.getEventByID(eventID)
+            Log.v("REF", "refreshing")
+        }
     }
 
     Column {
@@ -53,30 +50,22 @@ fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String, ad
                     SuggestionsList(emptyList(), addRestaurantClicked)
 
                     //TODO
-                    Button(onClick = {
-                        if(newRestaurantId != "0") {
+                    if(newRestaurantId != "0") {
+                        Button(onClick = {
                             scope.launch {
+                                trigger.value = !trigger.value
+                                Log.v("REF", "CHANGED")
                                 try {
-                                    validateAdditionOfRestaurantToEvent(userEntered.id, newRestaurantId, eventFound)
-
-                                    //TODO name
-                                    val resToAdd = RestaurantFB("", newRestaurantId, eventFound.id, 0, "NAME")
-                                    restaurantService.saveRestaurant(resToAdd)
-
-                                    eventService.addRestaurantToEvent(eventFound, newRestaurantId)
-                                    eventService.addParticipantAlreadyPosted(eventFound, userEntered.id)
-
+                                    AddRestaurantToEvent(userEntered, newRestaurantId, eventFound, newRestaurantName)
                                     message.value = "Added!"
                                 }
                                 catch(e: Exception) {
-                                    Log.v("ADDING RESTAURANT", e.message.toString())
                                     message.value = e.message.toString()
                                 }
                             }
-
+                        }) {
+                            Text("Confirm your choice")
                         }
-                    }) {
-
                     }
 
                     Text(message.value)

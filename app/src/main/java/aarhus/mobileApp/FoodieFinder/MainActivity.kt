@@ -2,9 +2,6 @@ package aarhus.mobileApp.FoodieFinder
 
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL
 //import aarhus.mobileApp.FoodieFinder.MainActivity.Companion.BASE_URL_GOOGLE
-import aarhus.mobileApp.FoodieFinder.integration.firebase.Events
-import aarhus.mobileApp.FoodieFinder.integration.firebase.Restaurants
-import aarhus.mobileApp.FoodieFinder.integration.firebase.Users
 import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.navigation.EventNavigation
 import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton

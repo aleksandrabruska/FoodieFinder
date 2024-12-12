@@ -177,7 +177,7 @@ fun EventNavigation(mapsService: MapsService){
                     currentUser.value,
                     onBackClicked = {controller.navigate("main_screen")},
                     onAddClicked = {controller.navigate("add_event")},
-                    onEnterClicked = { isLoading.value = true; controller.navigate("event_details/$it/0") })
+                    onEnterClicked = { isLoading.value = true; controller.navigate("event_details/$it/0/0") })
                 //MyEvents({},
                 //    onBackClicked = {controller.navigate("main_screen")}, action = {})
             }
@@ -193,16 +193,17 @@ fun EventNavigation(mapsService: MapsService){
                 currentUser.value?.let {AddEventButton(currentUser.value!!)}
 
             }
-            composable("event_details/{id}/{venueChosenID}"){
+            composable("event_details/{id}/{venueChosenID}/{name}"){
                 val id = it.arguments?.getString("id") ?: ""
                 val venueChosen = (it.arguments?.getString("venueChosenID") ?: "0")
+                val name = it.arguments?.getString("name") ?: ""
                 /*val user = remember { mutableStateOf<UserFB?>(null) }
                 val authService = remember{ AuthService() }
                 LaunchedEffect(key1 = Unit) {
                     // TODO HARD CODED
                         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
                 }*/
-                EnterEventScreen(id, currentUser.value, venueChosen,
+                EnterEventScreen(id, currentUser.value, venueChosen, name,
                     addRestaurantClicked = {controller.navigate("venue/0/$id")})
 
             }
@@ -244,10 +245,14 @@ fun EventNavigation(mapsService: MapsService){
                                     restaurants.value.get(
                                         num
                                     ).id
+                                }/${
+                                    restaurants.value.get(
+                                        num
+                                    ).name
                                 }"
                             )
                         },
-                        backHandler = { controller.navigate("event_details/$event/0") })
+                        backHandler = { controller.navigate("event_details/$event/0/0") })
 
                 }
             }

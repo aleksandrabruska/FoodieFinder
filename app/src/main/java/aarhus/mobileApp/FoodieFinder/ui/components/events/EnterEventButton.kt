@@ -8,8 +8,9 @@ import androidx.navigation.NavController
 
 @Composable
 fun EnterEventButton(event: EventFB/*, navController: NavController*/, onEnterClicked: (id:String) -> Unit ) {
-    Button(onClick = {onEnterClicked(event.id)}
-        //navController.navigate("enterEvent/${event.id}")
+    Button(onClick = {
+        onEnterClicked(event.id)
+    }
     ) {
         Text(event.name)
     }
