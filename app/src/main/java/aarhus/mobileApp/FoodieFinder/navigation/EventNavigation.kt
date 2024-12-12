@@ -35,10 +35,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.howard.simplemapapp.intergration.google.MapsService
 import android.location.Location
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 //TODO - repair loading
@@ -59,6 +63,8 @@ fun EventNavigation(mapsService: MapsService){
 
     val authService = remember{ AuthService() }
     val scope = rememberCoroutineScope()
+
+    var wrongData = remember{ mutableStateOf(false)}
 
     val granted = remember{
         mutableStateOf(
@@ -125,14 +131,30 @@ fun EventNavigation(mapsService: MapsService){
             composable("login"){
                 LogIn(
                     navigateToHome = {controller.navigate("main_screen")},
-                    login = {email, password ->
-                        //var user : UserFB? = null
+                    login = { email: String, password: String ->
                         scope.launch {
-                            currentUser.value = authService.logIn(email, password)
-                            isLoggedIn = (currentUser.value != null)
+                            try {
+                                currentUser.value = authService.logIn(email, password)
+                                isLoggedIn = (currentUser.value != null)
+                                wrongData.value = !isLoggedIn
+                                Log.v("LOGGED IN?", isLoggedIn.toString())
+                            } catch (e: Exception) {
+                                Log.v("WRONG", e.message.toString())
+
+                                wrongData.value = true
+
+                                controller.navigate("login")
+                            }
                         }
-                        currentUser.value.let{it}
+                    },
+
+
+                    wrongData = {
+                        Log.v("WRONG DATA?", wrongData.value.toString())
+                        wrongData.value
                     }
+
+
                 )
             }
             composable("main_screen"){
