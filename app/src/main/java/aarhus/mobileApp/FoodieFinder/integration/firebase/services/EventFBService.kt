@@ -34,6 +34,20 @@ class EventFBService {
 
     }
 
+    suspend fun addRestaurantToEvent(ev: EventFB, toAdd: String) {
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(ev.id)
+            .update("restaurants", FieldValue.arrayUnion(toAdd))
+            .await()
+    }
+
+    suspend fun addParticipantAlreadyPosted(ev: EventFB, toAdd: String) {
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(ev.id)
+            .update("participants_already_posted", FieldValue.arrayUnion(toAdd))
+            .await()
+    }
+
     suspend fun addUserToEvent(ev: EventFB, toAdd: String) {
         db.collection(EVENTS_COLLECTION_NAME)
             .document(ev.id)

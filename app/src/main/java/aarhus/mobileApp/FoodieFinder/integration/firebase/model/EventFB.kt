@@ -12,5 +12,4 @@ data class EventFB(
     val participants_already_voted: ArrayList<String> = ArrayList(),
     val restaurants: ArrayList<String> = ArrayList()
 
-
     )

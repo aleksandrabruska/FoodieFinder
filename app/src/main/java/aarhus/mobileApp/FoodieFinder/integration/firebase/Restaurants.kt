@@ -31,17 +31,9 @@ fun Restaurants() {
         Button(
             onClick = {
                 val a = RestaurantFB(
-                    ("someID" + Random.nextInt(0, 1000000)),
-                    Random.nextInt(0, 4),
-                    "fancy burger " + Random.nextInt(0, 100).toString(),
-                            arrayListOf(
-                        "user" + Random.nextInt(0, 100).toString(),
-                        "user" + Random.nextInt(0, 100).toString(),
-                        "user" + Random.nextInt(0, 100).toString(),
-                        "user" + Random.nextInt(0, 100).toString(),
-                        )
+                    ("someID" + Random.nextInt(0, 1000000))
                 )
-                service.saveRestaurant(a)
+                //service.saveRestaurant(a)
             }
         ) {
             Text("ADD SOMETHING")
