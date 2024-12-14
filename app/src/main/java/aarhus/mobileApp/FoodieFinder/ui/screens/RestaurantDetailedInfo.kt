@@ -3,7 +3,9 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 import aarhus.mobileApp.FoodieFinder.ui.components.Loader
+import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.BasicRestaurantInfoBox
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.DetailedRestaurantInfoBox
+import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.RestaurantPhoto
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -69,6 +71,11 @@ fun RestaurantDetailedInfo(id: String) {
                     delta
                 }).verticalScroll(scrollState, offset < -40) ) {
                 if (restaurant.value != null) {
+                    Text(restaurant.value!!.name?.let { it } ?: "None",
+                        fontSize = 40.sp,
+                        textAlign = TextAlign.Center)
+                    RestaurantPhoto(restaurant.value!!.photoReference)
+                    BasicRestaurantInfoBox(restaurant.value!!)
                     DetailedRestaurantInfoBox(restaurant.value!!)
                 }
             }

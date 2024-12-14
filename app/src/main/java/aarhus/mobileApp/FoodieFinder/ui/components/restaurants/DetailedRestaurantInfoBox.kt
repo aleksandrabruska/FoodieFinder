@@ -35,9 +35,9 @@ fun DetailedRestaurantInfoBox(restaurant_: Restaurant){
 
     val restaurant = remember { mutableStateOf<Restaurant>(restaurant_) }
     Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally){
-        Text(restaurant.value.name?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
+
         Spacer(modifier = Modifier.height(20.dp))
-        Text(restaurant.value.summary?.let { it } ?: "Summary not available", textAlign = TextAlign.Center, fontSize = 18.sp)
+        Text(restaurant.value.summary?.let { it } ?: "", textAlign = TextAlign.Center, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(20.dp))
 
         if(restaurant.value.openingHours?.size != 0) {

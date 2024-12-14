@@ -5,7 +5,12 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.SearchAndAddFriend
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.UserDetails
+import aarhus.mobileApp.FoodieFinder.ui.scaffolding.BasicScaffold
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,25 +20,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun addFriend(currentUser: UserFB?) {
-    val user = remember { mutableStateOf<UserFB?>(currentUser) }
+fun addFriend(currentUser: UserFB?, onBackClicked: () -> Unit) {
+    val user = remember { mutableStateOf(currentUser) }
     val authService = remember{ AuthService() }
     val scope = rememberCoroutineScope()
+
+
     /*
     LaunchedEffect(key1 = Unit) {
         // TODO HARD CODED
         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
     }
 */
-    Column () {
-        user.value?.let { user ->
-            SearchAndAddFriend(scope, user)
+    BasicScaffold(sectionName = "Add a friend", backClicked = onBackClicked) {
+        Column(modifier = Modifier.padding(50.dp).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.padding(40.dp))
+            user.value?.let { user ->
+                SearchAndAddFriend(scope, user, onBackClicked)
+            }
+
+
         }
-
-
     }
 
 }

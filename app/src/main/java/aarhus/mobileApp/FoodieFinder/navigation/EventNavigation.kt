@@ -168,7 +168,9 @@ fun EventNavigation(mapsService: MapsService){
                 )
             }
             composable("add_friend"){
-                addFriend(currentUser.value)
+                addFriend(currentUser.value,
+                    onBackClicked = {
+                        controller.navigate("my_friends")})
             }
             composable("my_friends"){
                 MyFriends(
@@ -195,7 +197,8 @@ fun EventNavigation(mapsService: MapsService){
                     Log.v("Null?", (user.value == null).toString())
                 }*/
                 //Log.v("Null?", (user.value == null).toString())
-                currentUser.value?.let {AddEventButton(currentUser.value!!)}
+                currentUser.value?.let {AddEventButton(currentUser.value!!,
+                    onBackClicked = {controller.navigate("my_events")})}
 
             }
             composable("event_details/{id}/{venueChosenID}/{name}"){
@@ -210,8 +213,8 @@ fun EventNavigation(mapsService: MapsService){
                 }*/
                 EnterEventScreen(id, currentUser.value, venueChosen, name,
                     addRestaurantClicked = {controller.navigate("venue/0/$id")},
-                    backClicked = {controller.navigate("my_events")})
-
+                    backClicked = {controller.navigate("my_events")},
+                    restaurantInfo = {id: String -> controller.navigate("venueDetails/$id")})
             }
             /*
             composable("event/{id}"){
@@ -239,10 +242,11 @@ fun EventNavigation(mapsService: MapsService){
                     val event = (it.arguments?.getString("eventID") ?: "0")
                     val next: Int = (if (num < actualRestNum - 1) (num + 1) else 0)
                     val prev: Int = (if (num > 0) (num - 1) else (actualRestNum - 1))
+                    val venueID = restaurants.value.get(num).id
                     Log.v("Next", next.toString())
                     Log.v("Prev", prev.toString())
                     RestaurantInfo(restaurants.value.get(num),
-                        details = { controller.navigate("venueDetails/$num") },
+                        details = { controller.navigate("venueDetails/$venueID") },
                         navigate = { controller.navigate("venue/$next/$event") },
                         navigateBack = { controller.navigate("venue/$prev/$event") },
                         check = {
@@ -263,9 +267,11 @@ fun EventNavigation(mapsService: MapsService){
                 }
             }
 
-            composable("venueDetails/{num}"){
-                val num = (it.arguments?.getString("num") ?: "0").toInt()
-                RestaurantDetailedInfo(restaurants.value.get(num).id!!)
+            composable("venueDetails/{id}"){
+                //val num = (it.arguments?.getString("num") ?: "0").toInt()
+                val id = (it.arguments?.getString("id") ?: "0")
+                //RestaurantDetailedInfo(restaurants.value.get(num).id!!)
+                RestaurantDetailedInfo(id)
             }
         }
     //}

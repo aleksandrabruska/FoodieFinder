@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,7 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SuggestionsList(suggestions: List<RestaurantFB>, thisUserAlreadyVoted: MutableState<Boolean>, thisUserAlreadyPosted: MutableState<Boolean>, onAddClicked: () -> Unit, vote: (RestaurantFB) -> Unit){
+fun SuggestionsList(suggestions: List<RestaurantFB>, thisUserAlreadyVoted: MutableState<Boolean>,
+                    thisUserAlreadyPosted: MutableState<Boolean>,
+                    onAddClicked: () -> Unit, vote: (RestaurantFB) -> Unit,
+                    restaurantInfo: (String) -> Unit){
     Box(    //to center the whole thing
         //modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -40,21 +45,20 @@ fun SuggestionsList(suggestions: List<RestaurantFB>, thisUserAlreadyVoted: Mutab
             )
             {
 
-                Column(modifier = Modifier.padding(25.dp)) {
+                Column(modifier = Modifier.padding(10.dp)) {
                     Text("Suggested restaurants", textAlign = TextAlign.Center, fontSize = 25.sp)
                     Spacer(modifier = Modifier.padding(10.dp))
                     for (suggestion in suggestions) {
-                        Text(suggestion.name, textAlign = TextAlign.Center, fontSize = 18.sp)
-                        Text("NUMBER OF VOTES: " + suggestion.number_of_votes.toString())
-                        if (!thisUserAlreadyPosted.value) {
-                            Button( onClick = {
-                                vote(suggestion)
-                            }
-                            ) {Text("VOTE")}
-                        }
+                        SuggestionItem(suggestion, thisUserAlreadyVoted.value, vote, restaurantInfo)
+                        Spacer(modifier = Modifier.padding(5.dp))
                     }
-                    if (!thisUserAlreadyVoted.value) {
-                        Button(onAddClicked, colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSurface)){
+                    if (!thisUserAlreadyPosted.value) {
+                        Button(onAddClicked,
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onSurface),
+                            modifier = Modifier
+                            .padding(10.dp, 10.dp, 0.dp, 0.dp)
+                            .clip(CutCornerShape(20.dp))
+                            .height(40.dp)){
                             Text("+", textAlign = TextAlign.Center, fontSize = 25.sp)
                         }
                     }

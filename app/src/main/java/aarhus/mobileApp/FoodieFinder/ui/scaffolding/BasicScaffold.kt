@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventScaffold(eventName: String, modifier: Modifier = Modifier, backClicked: () -> Unit, content: @Composable () -> Unit){
+fun BasicScaffold(sectionName: String, modifier: Modifier = Modifier, backClicked: () -> Unit, content: @Composable () -> Unit){
         Scaffold(
             topBar = {
 
@@ -36,7 +36,7 @@ fun EventScaffold(eventName: String, modifier: Modifier = Modifier, backClicked:
 
                                 Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Menu")
                             }
-                            Text(eventName, fontSize = 34.sp)
+                            Text(sectionName, fontSize = 34.sp)
                         }
                     }
                 )

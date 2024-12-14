@@ -11,7 +11,7 @@ import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.ManageFriendsO
 import aarhus.mobileApp.FoodieFinder.ui.components.events.participants.setUserStatus
 import aarhus.mobileApp.FoodieFinder.ui.components.events.restaurants.AddRestaurantToEvent
 import aarhus.mobileApp.FoodieFinder.ui.components.restaurants.SuggestionsList
-import aarhus.mobileApp.FoodieFinder.ui.scaffolding.EventScaffold
+import aarhus.mobileApp.FoodieFinder.ui.scaffolding.BasicScaffold
 import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -34,7 +34,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String,
-                     newRestaurantName: String, addRestaurantClicked: () -> Unit, backClicked: () -> Unit) {
+                     newRestaurantName: String, addRestaurantClicked: () -> Unit,
+                     backClicked: () -> Unit, restaurantInfo: (String) -> Unit) {
     val eventService = remember{ EventFBService() }
     val event = remember{ mutableStateOf<EventFB?>(null)}
     val message = remember{mutableStateOf<String>("")}
@@ -65,7 +66,7 @@ fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String,
         }
     }
     if(!isLoading.value) {
-        EventScaffold(eventName = event.value!!.name, backClicked = backClicked) {
+        BasicScaffold(sectionName = event.value!!.name, backClicked = backClicked) {
             Column(modifier = Modifier.scrollable(orientation = Orientation.Vertical,
             state = rememberScrollableState { delta ->
                 offset += delta
@@ -88,8 +89,8 @@ fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String,
                             EventDetails(eventFound, userEntered)
                             ManageFriendsOnEvent(/*scope,*/ eventFound, userEntered, isOwner.value)
                             SuggestionsList(suggesterRestaurants,
-                                thisUserAlreadyPosted,
                                 thisUserAlreadyVoted,
+                                thisUserAlreadyPosted,
                                 addRestaurantClicked,
                                 vote =
                                 { votedForRes ->
@@ -103,7 +104,8 @@ fun EnterEventScreen(eventID: String, user: UserFB?, newRestaurantId: String,
                                         trigger.value = !trigger.value
                                     }
 
-                                })
+                                },
+                                restaurantInfo = restaurantInfo)
 
                             //TODO
                             if (newRestaurantId != "0" && !thisUserAlreadyPosted.value) {

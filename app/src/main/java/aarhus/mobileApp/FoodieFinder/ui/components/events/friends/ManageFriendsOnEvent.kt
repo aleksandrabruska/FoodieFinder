@@ -3,6 +3,7 @@ package aarhus.mobileApp.FoodieFinder.ui.components.events.friends
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
+import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import aarhus.mobileApp.FoodieFinder.ui.components.events.participants.ManageParticipants
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ fun ManageFriendsOnEvent(/*scope: CoroutineScope,*/ event: EventFB, user: UserFB
     val participants = remember { mutableStateListOf<UserFB>() }
     val nonParticipants = remember { mutableStateListOf<UserFB>() }
     val addingMode = remember { mutableStateOf(false) }
+    val isLoading = remember { mutableStateOf(true) }
     LaunchedEffect(key1 = Unit) {
         friends.addAll(userService.getFriendsOfAUser(user.id))
 
@@ -36,13 +38,22 @@ fun ManageFriendsOnEvent(/*scope: CoroutineScope,*/ event: EventFB, user: UserFB
             if(event.id !in friend.events)
                 nonParticipants.add(friend)
         }
-
+        isLoading.value = false;
     }
-
-    Spacer(modifier = Modifier.height(20.dp))
-    ManageParticipants(/*scope, */user, event, nonParticipants, participants, isOwner, addingMode)
-    //every one who is not participating, but is a friend
-
+    if(!isLoading.value) {
+        Spacer(modifier = Modifier.height(20.dp))
+        ManageParticipants(/*scope, */user,
+            event,
+            nonParticipants,
+            participants,
+            isOwner,
+            addingMode
+        )
+        //every one who is not participating, but is a friend
+    }
+    else{
+        Loader()
+    }
 
 
 
