@@ -130,19 +130,24 @@ fun EventNavigation(mapsService: MapsService){
             composable("login"){
                 LogIn(
                     navigateToHome = {controller.navigate("main_screen")},
-                    login = { email: String, password: String ->
+                    createAccount = {controller.navigate("register")},
+                    login = { email: String, password: String, loading: MutableState<Boolean> ->
+                        loading.value = true;
                         scope.launch {
                             try {
                                 currentUser.value = authService.logIn(email, password)
                                 isLoggedIn = (currentUser.value != null)
                                 wrongData.value = !isLoggedIn
                                 Log.v("LOGGED IN?", isLoggedIn.toString())
+                                loading.value = false;
+
                             } catch (e: Exception) {
                                 Log.v("WRONG", e.message.toString())
 
                                 wrongData.value = true
-
+                                loading.value = false;
                                 controller.navigate("login")
+
                             }
                         }
                     },
