@@ -1,5 +1,6 @@
 package aarhus.mobileApp.FoodieFinder.ui.components.events
 
+import aarhus.mobileApp.FoodieFinder.domain.Date
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
@@ -33,9 +34,10 @@ import kotlinx.coroutines.launch
 fun AddEventButton(user: UserFB, onBackClicked: () -> Unit/*, scope: CoroutineScope, events: MutableList<EventFB>*/) {
     val name = remember { mutableStateOf<String>("") }
     val date = remember { mutableStateOf<String>("") }
-    val eventService = remember{EventFBService()}
-    val userFBService = remember{UserFBService()}
+    val eventService = remember { EventFBService() }
+    val userFBService = remember { UserFBService() }
     val scope = rememberCoroutineScope()
+    val message = remember { mutableStateOf<String?>(null) }
 
     BasicScaffold(sectionName = "Create an event", backClicked = onBackClicked) {
         Column(
@@ -43,28 +45,44 @@ fun AddEventButton(user: UserFB, onBackClicked: () -> Unit/*, scope: CoroutineSc
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.padding(40.dp))
-            name.value = inputField("enter name of your event", true, name)
+            name.value = inputField("enter name of your event", true, name, {ch -> ch >= ' '})
             date.value = inputField("enter a date", true, date)
             Spacer(modifier = Modifier.padding(10.dp))
-            Button(onClick = {
-                scope.launch {
-                    val eventToAdd =
-                        EventFB("", name.value, date.value, user.id, arrayListOf(user.id))
-                    val eventID = eventService.saveEvent(eventToAdd)
-                    userFBService.addEvent(user.id, eventID)
+            Button(
+                onClick = {
+                    scope.launch {
+                        try {
+                            Date(date.value)
+                            if (name.value.isBlank()) {
+                                throw Exception("BAD NAME")
+                            }
 
-                    name.value = ""
-                    date.value = ""
+                            val eventToAdd =
+                                EventFB("", name.value, date.value, user.id, arrayListOf(user.id))
+                            val eventID = eventService.saveEvent(eventToAdd)
+                            userFBService.addEvent(user.id, eventID)
 
-                    eventToAdd.id = eventID
-                    //events.add(eventToAdd)
-                }
-            }, modifier = Modifier
-                .clip(CutCornerShape(20.dp))
-                .fillMaxWidth(0.75f)
-                .height(40.dp)) {
-                Text("Add!", fontSize = 20.sp)
+                            name.value = ""
+                            date.value = ""
 
+                            eventToAdd.id = eventID
+                            message.value = "Added!"
+                            //events.add(eventToAdd)
+                        } catch (e: Exception) {
+                            message.value = e.message
+                        }
+                        //events.add(eventToAdd)
+                    }
+                }, modifier = Modifier
+                    .clip(CutCornerShape(20.dp))
+                    .fillMaxWidth(0.75f)
+                    .height(40.dp)
+            ) {
+                Text("Add")
+            }
+
+            message.value?.let {
+                Text(it)
             }
         }
     }
