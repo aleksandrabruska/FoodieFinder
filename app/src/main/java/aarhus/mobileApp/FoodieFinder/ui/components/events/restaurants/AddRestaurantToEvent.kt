@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("SuspiciousIndentation")
 suspend fun AddRestaurantToEvent(userEntered: UserFB, newRestaurantId: String, eventFound: EventFB, newRestaurantName: String) {
     val eventService = EventFBService()
     val restaurantService = RestaurantFBService()

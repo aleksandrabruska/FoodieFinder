@@ -48,6 +48,13 @@ class EventFBService {
             .await()
     }
 
+    suspend fun addParticipantAlreadyVoted(ev: EventFB, toAdd: String) {
+        db.collection(EVENTS_COLLECTION_NAME)
+            .document(ev.id)
+            .update("participants_already_voted", FieldValue.arrayUnion(toAdd))
+            .await()
+    }
+
     suspend fun addUserToEvent(ev: EventFB, toAdd: String) {
         db.collection(EVENTS_COLLECTION_NAME)
             .document(ev.id)

@@ -4,6 +4,7 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService.Companion.USERS_COLLECTION_NAME
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
@@ -30,12 +31,26 @@ class RestaurantFBService {
             .await()
     }
 
-    suspend fun searchByPlaceId(placeID: String): RestaurantFB? {
+    suspend fun getRestaurantByID(id: String): RestaurantFB? {
+        if (!id.isNotBlank()) {
+            return null
+        }
+        var restaurantDocument = db.collection(RESTAURANTS_COLLECTION_NAME)
+            .document(id)
+            .get()
+            .await()
+            .toObject<RestaurantFB>()
+
+        return restaurantDocument
+    }
+
+    suspend fun searchByPlaceAndEventId(placeID: String, eventID: String): RestaurantFB? {
         if (placeID.isBlank()) {
             return null
         }
         val querySnapshot = db.collection(RESTAURANTS_COLLECTION_NAME)
             .whereEqualTo("placeID", placeID)
+            .whereEqualTo("eventID", eventID)
             .get()
             .await()
 
@@ -44,6 +59,12 @@ class RestaurantFBService {
         } else {
             querySnapshot.documents.firstOrNull()?.toObject<RestaurantFB>()
         }
+    }
+
+    suspend fun addVote(res: RestaurantFB) {
+        db.collection(RESTAURANTS_COLLECTION_NAME)
+            .document(res.id)
+            .update("number_of_votes", FieldValue.increment(1))
     }
 
 
