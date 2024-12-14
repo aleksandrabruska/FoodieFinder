@@ -1,5 +1,6 @@
 package aarhus.mobileApp.FoodieFinder.ui.components.events
 
+import aarhus.mobileApp.FoodieFinder.domain.Date
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
@@ -24,25 +25,41 @@ fun AddEventButton(user: UserFB/*, scope: CoroutineScope, events: MutableList<Ev
     val eventService = remember{EventFBService()}
     val userFBService = remember{UserFBService()}
     val scope = rememberCoroutineScope()
+    val message = remember{mutableStateOf<String?>(null)}
 
     Column() {
-        name.value = inputField("enter name of your event", true, name)
+        name.value = inputField("enter name of your event", true, name, condition = {ch -> ch >= ' '})
         date.value = inputField("enter a date", true, date)
 
         Button(onClick = {
             scope.launch {
-                val eventToAdd = EventFB("", name.value, date.value, user.id, arrayListOf(user.id))
-                val eventID = eventService.saveEvent(eventToAdd)
-                userFBService.addEvent(user.id, eventID)
 
-                name.value = ""
-                date.value = ""
+                try {
+                    Date(date.value)
+                    if (name.value.isBlank()) {
+                        throw Exception("BAD NAME")
+                    }
+                    
+                    val eventToAdd = EventFB("", name.value, date.value, user.id, arrayListOf(user.id))
+                    val eventID = eventService.saveEvent(eventToAdd)
+                    userFBService.addEvent(user.id, eventID)
 
-                eventToAdd.id = eventID
-                //events.add(eventToAdd)
+                    name.value = ""
+                    date.value = ""
+
+                    eventToAdd.id = eventID
+                    message.value = "Added!"
+                    //events.add(eventToAdd)
+                } catch(e: Exception) {
+                    message.value = e.message
+                }
             }
         }) {
             Text("Add")
+        }
+
+        message.value?.let {
+            Text(it)
         }
     }
 }
