@@ -12,7 +12,7 @@ import aarhus.mobileApp.FoodieFinder.ui.screens.Events.EnterEventScreen
 import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.MainScreen
-import aarhus.mobileApp.FoodieFinder.ui.screens.MyEvents
+
 import aarhus.mobileApp.FoodieFinder.ui.screens.MyFriends
 import aarhus.mobileApp.FoodieFinder.ui.screens.Register
 import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetailedInfo

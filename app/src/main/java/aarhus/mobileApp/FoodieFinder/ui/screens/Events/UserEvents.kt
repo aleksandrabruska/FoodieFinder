@@ -1,7 +1,9 @@
 package aarhus.mobileApp.FoodieFinder.ui.screens.Events
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
+import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
+import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.events.ManageEvents
 import aarhus.mobileApp.FoodieFinder.ui.scaffolding.FriendsEventsScaffold
@@ -16,24 +18,24 @@ import androidx.compose.ui.Alignment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 
 @Composable
 fun UserEvents(currentUser: UserFB?, onBackClicked: () -> Unit, onAddClicked: () -> Unit, onEnterClicked: (String) -> Unit) {
     val user = remember { mutableStateOf<UserFB?>(currentUser) }
     val authService = remember{ AuthService() }
     val scope = rememberCoroutineScope()
+    val events = remember { mutableStateOf<List<EventFB>>(emptyList()) }
+    val eventService = remember{ EventFBService() }
 
     val userService = remember { UserFBService() }
-
+    suspend fun refresh() {
+        user.value?.let {
+            events.value = eventService.getUsersEvents(it.id)
+        }
+    }
     LaunchedEffect(key1 = Unit) {
-        // TODO HARD CODED
-        try {
-
-            //user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-        }
-        catch(e: Exception) {
-            Log.v("LOG", e.message.toString())
-        }
+        refresh()
     }
 
   //  val navController = rememberNavController()
@@ -50,7 +52,12 @@ fun UserEvents(currentUser: UserFB?, onBackClicked: () -> Unit, onAddClicked: ()
     FriendsEventsScaffold(text = "Events", addClicked = onAddClicked, backClicked = onBackClicked) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-            ManageEvents(user.value, onEnterClicked/*scope*/)
+            ManageEvents(user = user.value, events = events.value, onEnterClicked = onEnterClicked,
+                onChange = {
+                    scope.launch {
+                        refresh()
+                    }
+                }/*scope*/)
         }
     }
 

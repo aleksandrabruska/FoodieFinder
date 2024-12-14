@@ -30,7 +30,7 @@ fun ManageFriendButton(text: String, action: () -> Unit) {
         border = BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface),
     ) {
     Box(Modifier.clickable {
-        action}. padding(10.dp, 0.dp)
+        action()}. padding(10.dp, 0.dp)
     ) {
 
             Text(text, textAlign = TextAlign.Center)
