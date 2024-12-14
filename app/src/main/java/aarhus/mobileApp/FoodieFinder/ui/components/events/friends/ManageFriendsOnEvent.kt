@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,7 @@ fun ManageFriendsOnEvent(/*scope: CoroutineScope,*/ event: EventFB, user: UserFB
     val userService = remember { UserFBService() }
     val participants = remember { mutableStateListOf<UserFB>() }
     val nonParticipants = remember { mutableStateListOf<UserFB>() }
-
+    val addingMode = remember { mutableStateOf(false) }
     LaunchedEffect(key1 = Unit) {
         friends.addAll(userService.getFriendsOfAUser(user.id))
 
@@ -39,7 +40,7 @@ fun ManageFriendsOnEvent(/*scope: CoroutineScope,*/ event: EventFB, user: UserFB
     }
 
     Spacer(modifier = Modifier.height(20.dp))
-    ManageParticipants(/*scope, */user, event, nonParticipants, participants, isOwner)
+    ManageParticipants(/*scope, */user, event, nonParticipants, participants, isOwner, addingMode)
     //every one who is not participating, but is a friend
 
 

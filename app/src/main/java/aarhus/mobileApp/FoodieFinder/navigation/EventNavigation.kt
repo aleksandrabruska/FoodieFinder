@@ -209,7 +209,8 @@ fun EventNavigation(mapsService: MapsService){
                         user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
                 }*/
                 EnterEventScreen(id, currentUser.value, venueChosen, name,
-                    addRestaurantClicked = {controller.navigate("venue/0/$id")})
+                    addRestaurantClicked = {controller.navigate("venue/0/$id")},
+                    backClicked = {controller.navigate("my_events")})
 
             }
             /*

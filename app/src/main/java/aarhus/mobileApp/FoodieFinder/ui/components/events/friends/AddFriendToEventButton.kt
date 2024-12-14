@@ -5,27 +5,34 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddFriendToEventButton(scope: CoroutineScope, user: UserFB, event: EventFB, nonParticipants: MutableList<UserFB>, participants: MutableList<UserFB>) {
+fun AddFriendToEventButton(scope: CoroutineScope, user: UserFB, event: EventFB,
+                           nonParticipants: MutableList<UserFB>, participants: MutableList<UserFB>,
+                           addingMode: MutableState<Boolean>
+) {
     val eventService = remember { EventFBService() }
     val userService = remember { UserFBService() }
 
 
     //onclick -> remove from nonparticipants, add to participants
     Column() {
-        Text(user.name)
+
     }
     Column {
-        Button(onClick = {
-
+        Box(Modifier.clickable {
+            addingMode.value = false
             scope.launch {
                 try {
                     eventService.addUserToEvent(event, user.id)
@@ -36,9 +43,10 @@ fun AddFriendToEventButton(scope: CoroutineScope, user: UserFB, event: EventFB, 
                     e.message?.let { Log.v("EVENT", it) }
 
                 }
+
             }
         }) {
-            Text("+")
+            FriendItem(removable = false, friend = user)
         }
 
     }

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventScaffold(eventName: String, modifier: Modifier = Modifier, menuClicked: () -> Unit, content: @Composable () -> Unit){
+fun EventScaffold(eventName: String, modifier: Modifier = Modifier, backClicked: () -> Unit, content: @Composable () -> Unit){
         Scaffold(
             topBar = {
 
@@ -31,7 +31,7 @@ fun EventScaffold(eventName: String, modifier: Modifier = Modifier, menuClicked:
                         Row() {
                             IconButton(onClick = {
                                 Log.v("aaa", "scaffold icon menu clocked")
-                                menuClicked()
+                                backClicked()
                             }) {
 
                                 Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Menu")

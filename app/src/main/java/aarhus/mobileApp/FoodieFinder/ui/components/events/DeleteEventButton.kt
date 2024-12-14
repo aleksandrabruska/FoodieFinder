@@ -27,8 +27,17 @@ fun DeleteEventButton(event: EventFB, onChange: () -> Unit) {
     val userService = remember { UserFBService() }
     val eventService = remember { EventFBService() }
     val scope = rememberCoroutineScope()
+    DeleteButton  {
+        scope.launch {
+            event.participants.forEach { userId ->
+                userService.removeEvent(userId, event.id)
+            }
+            eventService.removeEvent(event.id)
+            onChange()
 
-    OutlinedCard(
+        }
+    }
+    /*OutlinedCard(
         modifier = Modifier.padding(10.dp, 0.dp).width(40.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -49,5 +58,5 @@ fun DeleteEventButton(event: EventFB, onChange: () -> Unit) {
         }. padding(10.dp, 0.dp)) {
             Text(" X ")
         }
-    }
+    }*/
 }

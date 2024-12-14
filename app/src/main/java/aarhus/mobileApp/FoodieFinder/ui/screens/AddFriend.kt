@@ -3,7 +3,6 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
-import aarhus.mobileApp.FoodieFinder.ui.components.friends.ManageFriendButton
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.SearchAndAddFriend
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.UserDetails
 import androidx.compose.foundation.layout.Column

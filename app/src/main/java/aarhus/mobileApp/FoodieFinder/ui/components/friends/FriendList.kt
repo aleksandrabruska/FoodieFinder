@@ -2,6 +2,8 @@ package aarhus.mobileApp.FoodieFinder.ui.components.friends
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
+import aarhus.mobileApp.FoodieFinder.ui.components.events.DeleteButton
+import aarhus.mobileApp.FoodieFinder.ui.components.events.friends.FriendItem
 import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
@@ -41,19 +43,12 @@ fun FriendList(friends: List<UserFB>, user: UserFB, scope: CoroutineScope, onCha
             delta
         }).verticalScroll(scrollState, offset < -40) ){
         friends.forEach { friend ->
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Row(modifier = Modifier.padding(20.dp, 10.dp), verticalAlignment = Alignment.Bottom){
-                Text(friend.name,  textAlign = TextAlign.Left, fontSize = 25.sp, modifier = Modifier.fillMaxWidth(0.8f))
-                ManageFriendButton(" X ", action = {
-                    scope.launch {
-                        service.removeFriend(user.id, friend.email)
-                        service.removeFriend(friend.id, user.email)
-                        onChange()
-                    }
-                }
-                )
-                }
-            }
+            FriendItem(removable = true, friend) {  scope.launch {
+                service.removeFriend(user.id, friend.email)
+                service.removeFriend(friend.id, user.email)
+                onChange()
+            }}
+
             Spacer(modifier = Modifier.padding(5.dp))
         }
 
