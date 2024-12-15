@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.BlendModeColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,7 +45,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LogIn(navigateToHome: () -> Unit, createAccount: () -> Unit, login: (String, String, MutableState<Boolean> ) -> Unit,
+fun LogIn(createAccount: () -> Unit, login: (String, String, MutableState<Boolean> ) -> Unit,
           wrongData: () -> Boolean) {
     val email = remember { mutableStateOf<String>("") }
     val password = remember { mutableStateOf<String>("") }
@@ -53,8 +54,8 @@ fun LogIn(navigateToHome: () -> Unit, createAccount: () -> Unit, login: (String,
     val successMessage = remember { mutableStateOf<String?>(null) }
     val isLoading = remember { mutableStateOf(false) }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Foodie Finder", textAlign = TextAlign.Center, fontSize = 50.sp,
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+        Text("Foodie\n\nFinder", textAlign = TextAlign.Center, fontSize = 50.sp,
             modifier = Modifier.padding(40.dp))
         Text("Sign in to start your journey!", fontSize = 25.sp)
         Spacer(modifier = Modifier.padding(20.dp))
@@ -105,35 +106,6 @@ fun LogIn(navigateToHome: () -> Unit, createAccount: () -> Unit, login: (String,
         }
         Box(Modifier.clickable { createAccount() }){
             Text("Don't have an account? Click here to sign up!")
-        }
-
-        //user.value?.let {
-            //Text("USERNAME: " + user.value!!.name)
-            //Text("EMAIL: " + user.value!!.email)
-            //Text("USER ID:" + user.value!!.id)
-            //navigateToHome()
-        ///}
-    }
-}
-
-@Composable
-fun Loggg() {
-    val controller = rememberNavController()
-
-    NavHost(
-        navController = controller,
-        startDestination = "logInScreen"
-    ) {
-        composable("logInScreen") {
-
-        }
-
-        composable("register") {
-
-        }
-
-        composable ("home") {
-
         }
     }
 }

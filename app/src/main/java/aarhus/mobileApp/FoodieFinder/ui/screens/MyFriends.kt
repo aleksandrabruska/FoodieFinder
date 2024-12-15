@@ -3,6 +3,7 @@ package aarhus.mobileApp.FoodieFinder.ui.screens
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
+import aarhus.mobileApp.FoodieFinder.ui.components.Loader
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.FriendList
 import aarhus.mobileApp.FoodieFinder.ui.scaffolding.FriendsEventsScaffold
 import androidx.compose.foundation.layout.Column
@@ -34,40 +35,43 @@ import kotlinx.coroutines.launch
 fun MyFriends(currentUser: UserFB?, onAddFriendClicked: () -> Unit, onBackClicked: () -> Unit) {
 
     val user = remember { mutableStateOf<UserFB?>(currentUser) }
-    val authService = remember{ AuthService() }
-
     val friends = remember { mutableStateOf<List<UserFB>>(emptyList()) }
     val userService = remember { UserFBService() }
     val scope = rememberCoroutineScope()
+    val isLoading = remember{ mutableStateOf(true)}
 
 
     suspend fun refresh() {
+        isLoading.value = true
         user.value?.let {
             friends.value = userService.getFriendsOfAUser(it.id)
         }
+        isLoading.value = false
     }
 
 
     LaunchedEffect(key1 = Unit) {
-        // TODO HARD CODED
-        //  user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-
         refresh()
     }
 
 
     FriendsEventsScaffold(text = "Friends", addClicked = onAddFriendClicked, backClicked = onBackClicked) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(modifier = Modifier.padding(20.dp))
-            //Text("**display friends here**")
-            user.value?.let {
-                FriendList(friends.value, it, scope, onChange = {
-                    scope.launch {
-                        refresh()
-                    }
-                })
+            if (!isLoading.value) {
+                Spacer(modifier = Modifier.padding(20.dp))
+                user.value?.let {
+                    FriendList(friends.value, it, scope, onChange = {
+                        scope.launch {
+                            refresh()
+                        }
+                    })
+                }
+            }
+            else{
+                Loader()
             }
         }
+
     }
 
 

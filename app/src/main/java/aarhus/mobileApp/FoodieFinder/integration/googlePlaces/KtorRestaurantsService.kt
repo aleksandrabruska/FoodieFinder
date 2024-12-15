@@ -1,12 +1,9 @@
-package aarhus.mobileApp.FoodieFinder.integration
+package aarhus.mobileApp.FoodieFinder.integration.googlePlaces
 
 import aarhus.mobileApp.FoodieFinder.BuildConfig
 import aarhus.mobileApp.FoodieFinder.integration.model.Comment
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.ImageView
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.request.header
@@ -21,13 +18,9 @@ import kotlinx.serialization.json.Json
 import io.ktor.serialization.kotlinx.json.json
 
 
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import io.ktor.client.statement.readBytes
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.math.max
@@ -77,10 +70,7 @@ class KtorRestaurantsService : RestaurantsService {
             val responseArray : JSONArray = JSONObject(response.bodyAsText()).getJSONArray("results")
             for (i in 0 until responseArray.length()) {
                 val result : JSONObject = responseArray.getJSONObject(i)
-                /*val restaurant: Restaurant? = get(result.getString("place_id"))
-                if(restaurant != null) {
-                    restaurants = restaurants + restaurant!!
-                }*/
+
                 Log.v("Before ", "aaa")
                 val jsonParser = Json {
                     ignoreUnknownKeys = true // Default behavior: ignore extra keys
@@ -90,7 +80,7 @@ class KtorRestaurantsService : RestaurantsService {
                 val resultFull = deserializeNested(result, restaurant)
                 Log.v("After after", restaurant.toString())
                 if(resultFull != null) {
-                    restaurants = restaurants + resultFull!!
+                    restaurants = restaurants + resultFull
                 }
 
             }

@@ -1,4 +1,4 @@
-package aarhus.mobileApp.FoodieFinder.ui.components.events.restaurants
+package aarhus.mobileApp.FoodieFinder.integration.firebase
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.RestaurantFB
@@ -7,14 +7,11 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.services.EventFBServic
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.RestaurantFBService
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 
 
 @SuppressLint("SuspiciousIndentation")
-suspend fun AddRestaurantToEvent(userEntered: UserFB, newRestaurantId: String, eventFound: EventFB, newRestaurantName: String) {
+suspend fun AddRestaurantToEvent(userEntered: UserFB, newRestaurantId: String,
+                                 eventFound: EventFB, newRestaurantName: String) {
     val eventService = EventFBService()
     val restaurantService = RestaurantFBService()
 
@@ -26,7 +23,6 @@ suspend fun AddRestaurantToEvent(userEntered: UserFB, newRestaurantId: String, e
                 eventFound
             )
 
-            //TODO name
             val resToAdd = RestaurantFB(
                 "",
                 newRestaurantId,

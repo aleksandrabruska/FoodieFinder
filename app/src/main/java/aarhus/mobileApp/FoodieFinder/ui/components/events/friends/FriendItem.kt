@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 fun FriendItem(removable: Boolean = true, friend: UserFB,onDelete: () -> Unit = {}){
     Card(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.padding(20.dp, 10.dp), verticalAlignment = Alignment.Bottom){
-            Text(friend.name,  textAlign = TextAlign.Left, fontSize = 25.sp, modifier = Modifier.fillMaxWidth(0.8f))
-            //ManageFriendButton(" X ", action = {
+            Text(friend.name,  textAlign = TextAlign.Left, fontSize = 25.sp,
+                modifier = Modifier.fillMaxWidth(0.8f))
             if(removable){
                 DeleteButton( action = {
                     onDelete()

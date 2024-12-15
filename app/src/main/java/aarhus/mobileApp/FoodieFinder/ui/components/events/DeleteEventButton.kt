@@ -37,26 +37,4 @@ fun DeleteEventButton(event: EventFB, onChange: () -> Unit) {
 
         }
     }
-    /*OutlinedCard(
-        modifier = Modifier.padding(10.dp, 0.dp).width(40.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        border = BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface),
-    ) {
-        Box(Modifier.clickable {
-
-            scope.launch {
-                event.participants.forEach { userId ->
-                    userService.removeEvent(userId, event.id)
-                }
-                eventService.removeEvent(event.id)
-                onChange()
-
-
-            }
-        }. padding(10.dp, 0.dp)) {
-            Text(" X ")
-        }
-    }*/
 }

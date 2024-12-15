@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,7 +38,7 @@ fun ManageParticipants(user: UserFB, event: EventFB,
                        nonParticipants: MutableList<UserFB>, participants: MutableList<UserFB>,
                        isOwner: Boolean, addingMode: MutableState<Boolean>) {
     Box(    //to center the whole thing
-       // modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier

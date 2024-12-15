@@ -31,7 +31,7 @@ fun FriendOnEvent(scope: CoroutineScope, user: UserFB, event: EventFB,
                   isOwnerLogged: Boolean) {
     val eventService = remember { EventFBService() }
     val userService = remember { UserFBService() }
-    FriendItem(friend = user) { scope.launch {
+    FriendItem(removable = isOwnerLogged, friend = user, onDelete = { scope.launch {
         try {
             eventService.removeUserFromEvent(event, user.id)
             userService.removeEvent(user.id, event.id)
@@ -43,6 +43,6 @@ fun FriendOnEvent(scope: CoroutineScope, user: UserFB, event: EventFB,
 
         }
     }
-    }
+    })
 
 }

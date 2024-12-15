@@ -12,6 +12,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +43,6 @@ fun AddFriendToEventButton(scope: CoroutineScope, user: UserFB, event: EventFB,
                     participants.add(user)
                 } catch (e: Exception) {
                     e.message?.let { Log.v("EVENT", it) }
-
                 }
 
             }

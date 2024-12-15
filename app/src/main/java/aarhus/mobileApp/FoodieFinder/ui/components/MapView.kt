@@ -15,7 +15,6 @@ fun MapView(latLng: LatLng){
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
             latLng, 15f
-            //locations[0].let { LatLng(it.latitude, it.longitude) }, 15f
         )
     }
 

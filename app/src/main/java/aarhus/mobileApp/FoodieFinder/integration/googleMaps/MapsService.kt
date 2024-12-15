@@ -1,11 +1,10 @@
-package com.howard.simplemapapp.intergration.google
+package aarhus.mobileApp.FoodieFinder.integration.googleMaps
 
 import android.location.Location
 import android.location.LocationRequest
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDateTime
 
 //This class is from the simplemaps example from the lecture number 10
 class MapsService(private val locationProvider: FusedLocationProviderClient) {

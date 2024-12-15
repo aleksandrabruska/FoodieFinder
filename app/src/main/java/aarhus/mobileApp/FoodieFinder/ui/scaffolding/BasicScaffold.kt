@@ -1,6 +1,7 @@
 package aarhus.mobileApp.FoodieFinder.ui.scaffolding
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,10 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicScaffold(sectionName: String, modifier: Modifier = Modifier, backClicked: () -> Unit, content: @Composable () -> Unit){
-        Scaffold(
+    BackHandler{
+        backClicked()
+    }
+    Scaffold(
             topBar = {
 
                 TopAppBar(title = { "Foodie Finder scaffold top bar" },
@@ -45,6 +49,7 @@ fun BasicScaffold(sectionName: String, modifier: Modifier = Modifier, backClicke
         { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 content()
+
             }
 
         }

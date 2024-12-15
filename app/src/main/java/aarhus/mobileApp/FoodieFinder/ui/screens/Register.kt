@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun Register(navigate: () -> Unit) {
     val authService = remember{AuthService()}
-    val userService = remember{UserFBService()}
     val scope = rememberCoroutineScope()
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val successMessage = remember { mutableStateOf<String?>(null)}
@@ -50,8 +49,8 @@ fun Register(navigate: () -> Unit) {
     val name = remember { mutableStateOf<String>("") }
 
 
-    Column(horizontalAlignment =  Alignment.CenterHorizontally) {
-        Text("Foodie Finder", textAlign = TextAlign.Center, fontSize = 50.sp,
+    Column(horizontalAlignment =  Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+        Text("Foodie \n\n Finder", textAlign = TextAlign.Center, fontSize = 50.sp,
             modifier = Modifier.padding(40.dp))
         Text("Sign up to start your journey!", fontSize = 25.sp)
         Spacer(modifier = Modifier.padding(20.dp))

@@ -23,28 +23,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun EventDetails(event: EventFB, userEntered: UserFB) {
 
-    Column(modifier = Modifier.padding(10.dp)){
+    Column(modifier = Modifier.padding(40.dp,10.dp,0.dp,0.dp)){
         if (event.ownerId == userEntered.id)
             Text("You are the owner of this event", fontStyle = FontStyle.Italic)
 
-
         Text("Date: " + event.date, fontSize = 25.sp)
     }
-    /*
-    Text("participants:")
-    event.participants.forEach {  user ->
-        Text(" - " + user)
-    }
-    Text("already posted:")
-    event.participants_already_posted.forEach { user ->
-        Text(" - " + user)
-    }
-    Text("already voted:")
-    event.participants_already_voted.forEach { user ->
-        Text(" - " + user)
-    }
-    Text("restaurants:")
-    event.restaurants.forEach { restaurant ->
-        Text(" - " + restaurant)
-    }*/
 }

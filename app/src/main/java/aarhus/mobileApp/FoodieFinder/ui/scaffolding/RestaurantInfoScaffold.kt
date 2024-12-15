@@ -1,6 +1,7 @@
 package aarhus.mobileApp.FoodieFinder.ui.scaffolding
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,7 @@ fun RestaurantInfoScaffold(modifier: Modifier = Modifier,
                            infoClicked: () -> Unit, arrowClicked: () -> Unit,
                            backClicked: () -> Unit,
                            content: @Composable () -> Unit){
-        Scaffold(
+    Scaffold(
             bottomBar = {
 
                 BottomAppBar(

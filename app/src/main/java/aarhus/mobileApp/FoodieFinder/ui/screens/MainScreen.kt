@@ -23,18 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MainScreen(friendsClicked: () -> Unit, eventsClicked:  () -> Unit){
-    Column(horizontalAlignment = Alignment.CenterHorizontally){
+fun MainScreen(friendsClicked: () -> Unit, eventsClicked:  () -> Unit, onLogOut: () -> Unit){
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()){
 
-        Text("Foodie Finder", textAlign = TextAlign.Center, fontSize = 50.sp,
+        Text("Foodie\n\nFinder", textAlign = TextAlign.Center, fontSize = 50.sp,
             modifier = Modifier.padding(40.dp))
         Row() {
             val image =
                 painterResource(aarhus.mobileApp.FoodieFinder.R.drawable.logo)
             Image(
-
                 painter = image,
-
                 contentDescription = "Plant Animation",
                 modifier = Modifier.padding(30.dp).width(600.dp)
 
@@ -49,6 +47,11 @@ fun MainScreen(friendsClicked: () -> Unit, eventsClicked:  () -> Unit){
         Button(onClick = eventsClicked, modifier = Modifier.clip(
             CutCornerShape(30.dp)).fillMaxWidth(0.8f).height(70.dp)){
             Text("Events",textAlign = TextAlign.Center, fontSize = 35.sp)
+        }
+        Spacer(modifier = Modifier.padding(40.dp))
+        Button(onClick = onLogOut, modifier = Modifier.clip(
+            CutCornerShape(30.dp)).fillMaxWidth(0.8f).height(40.dp)){
+            Text("Sign out",textAlign = TextAlign.Center, fontSize = 15.sp)
         }
     }
 

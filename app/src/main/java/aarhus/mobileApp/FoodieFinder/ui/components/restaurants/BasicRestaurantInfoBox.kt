@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 fun BasicRestaurantInfoBox(restaurant_: Restaurant) {
 
     val restaurant = remember { mutableStateOf<Restaurant>(restaurant_) }
-    Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.padding(10.dp, 10.dp, 0.dp, 0.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(restaurant.value.address?.let { it } ?: "None", textAlign = TextAlign.Center, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
         if(restaurant.value.rating != null) {
@@ -38,6 +38,7 @@ fun BasicRestaurantInfoBox(restaurant_: Restaurant) {
             }
             Text("Price level: " + stars, fontSize = 18.sp)
         }
+
     }
 
 }

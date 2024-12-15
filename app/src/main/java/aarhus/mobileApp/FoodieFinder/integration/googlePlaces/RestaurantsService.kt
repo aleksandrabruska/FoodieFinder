@@ -1,4 +1,4 @@
-package aarhus.mobileApp.FoodieFinder.integration
+package aarhus.mobileApp.FoodieFinder.integration.googlePlaces
 
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
 

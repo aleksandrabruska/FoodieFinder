@@ -1,6 +1,5 @@
 package aarhus.mobileApp.FoodieFinder
 
-//import aarhus.mobileApp.FoodieFinder.ui.screens.RestaurantDetails
 import aarhus.mobileApp.FoodieFinder.ui.theme.FoodieFinderTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,15 +1,13 @@
 package aarhus.mobileApp.FoodieFinder.navigation
 
-import aarhus.mobileApp.FoodieFinder.integration.KtorRestaurantsService
+import aarhus.mobileApp.FoodieFinder.integration.googlePlaces.KtorRestaurantsService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
-import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
-import aarhus.mobileApp.FoodieFinder.integration.model.Event
 import aarhus.mobileApp.FoodieFinder.integration.model.Restaurant
-import aarhus.mobileApp.FoodieFinder.ui.components.Loader
-import aarhus.mobileApp.FoodieFinder.ui.components.events.AddEventButton
-import aarhus.mobileApp.FoodieFinder.ui.screens.Events.EnterEventScreen
-import aarhus.mobileApp.FoodieFinder.ui.screens.Events.UserEvents
+import aarhus.mobileApp.FoodieFinder.ui.screens.AddEvent
+import aarhus.mobileApp.FoodieFinder.ui.screens.Events.EventInfo
+import aarhus.mobileApp.FoodieFinder.ui.screens.Events.MyEvents
+
 import aarhus.mobileApp.FoodieFinder.ui.screens.LogIn
 import aarhus.mobileApp.FoodieFinder.ui.screens.MainScreen
 
@@ -32,24 +30,25 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.howard.simplemapapp.intergration.google.MapsService
+import aarhus.mobileApp.FoodieFinder.integration.googleMaps.MapsService
 import android.location.Location
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
+import android.content.Context
+import android.location.LocationManager
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-//TODO - repair loading
-//TODO - API call later?
-//TODO - repair when wrong password!
 private const val PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 @Composable
-fun EventNavigation(mapsService: MapsService){
+fun FoodieFinderNavigation(mapsService: MapsService){
     val restaurantsService = remember { KtorRestaurantsService() }
     val isLoading = remember { mutableStateOf(false) }
     val restaurants = remember { mutableStateOf<List<Restaurant>>(emptyList()) }
@@ -73,6 +72,10 @@ fun EventNavigation(mapsService: MapsService){
         )
         )
     }
+    val locationManager = remember{ context.getSystemService(Context.LOCATION_SERVICE) as LocationManager }
+    var enabled = remember{mutableStateOf(false)}
+    enabled.value = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {isGranted: Boolean ->
@@ -82,28 +85,21 @@ fun EventNavigation(mapsService: MapsService){
     var isLoggedIn by remember { mutableStateOf(false) }
 
 
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn) {
-            controller.navigate("main_screen")
-        } else {
-            controller.navigate("login")
-        }
-        isLoading.value = false
+    LaunchedEffect(isLoggedIn, enabled) {
         if(!granted.value){
             launcher.launch("android.permission.ACCESS_FINE_LOCATION")
         }
-        currentLocation = mapsService.getCurrentLocation()
-        /*if(currentLocation != null) {
-            restaurants.value =
-                restaurantsService.get(
-                    currentLocation!!.latitude,
-                    currentLocation!!.longitude,
-                    maxRestNum,
-                    1000
-                )
-            isLoading.value = false
-        }*/
-
+        else if(enabled.value) {
+            currentLocation = mapsService.getCurrentLocation()
+        }
+            if (isLoggedIn) {
+            controller.navigate("main_screen")
+        } else {
+            if((controller.currentDestination?.route) != "login") {
+                controller.navigate("login")
+            }
+        }
+        isLoading.value = false
 
     }
 
@@ -113,7 +109,6 @@ fun EventNavigation(mapsService: MapsService){
         }
     }
 
-    //if(!isLoading.value) {
         for (item in restaurants.value)
             Log.v("resaturant is:", item.name ?: "None")
 
@@ -129,7 +124,6 @@ fun EventNavigation(mapsService: MapsService){
             }
             composable("login"){
                 LogIn(
-                    navigateToHome = {controller.navigate("main_screen")},
                     createAccount = {controller.navigate("register")},
                     login = { email: String, password: String, loading: MutableState<Boolean> ->
                         loading.value = true;
@@ -164,7 +158,8 @@ fun EventNavigation(mapsService: MapsService){
             composable("main_screen"){
                 MainScreen(
                     friendsClicked = {controller.navigate("my_friends")},
-                    eventsClicked = {controller.navigate("my_events")}
+                    eventsClicked = {controller.navigate("my_events")},
+                    onLogOut = {isLoggedIn = false; currentUser.value = null}
                 )
             }
             composable("add_friend"){
@@ -180,24 +175,14 @@ fun EventNavigation(mapsService: MapsService){
                 )
             }
             composable("my_events"){
-                UserEvents(
+                    MyEvents(
                     currentUser.value,
                     onBackClicked = {controller.navigate("main_screen")},
                     onAddClicked = {controller.navigate("add_event")},
                     onEnterClicked = { isLoading.value = true; controller.navigate("event_details/$it/0/0") })
-                //MyEvents({},
-                //    onBackClicked = {controller.navigate("main_screen")}, action = {})
             }
             composable("add_event"){
-                /*val user = remember { mutableStateOf<UserFB?>(null) }
-                val authService = remember{ AuthService() }
-                LaunchedEffect(key1 = Unit) {
-                    // TODO HARD CODED
-                    user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-                    Log.v("Null?", (user.value == null).toString())
-                }*/
-                //Log.v("Null?", (user.value == null).toString())
-                currentUser.value?.let {AddEventButton(currentUser.value!!,
+                currentUser.value?.let {AddEvent(currentUser.value!!,
                     onBackClicked = {controller.navigate("my_events")})}
 
             }
@@ -205,65 +190,61 @@ fun EventNavigation(mapsService: MapsService){
                 val id = it.arguments?.getString("id") ?: ""
                 val venueChosen = (it.arguments?.getString("venueChosenID") ?: "0")
                 val name = it.arguments?.getString("name") ?: ""
-                /*val user = remember { mutableStateOf<UserFB?>(null) }
-                val authService = remember{ AuthService() }
-                LaunchedEffect(key1 = Unit) {
-                    // TODO HARD CODED
-                        user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-                }*/
-                EnterEventScreen(id, currentUser.value, venueChosen, name,
+                EventInfo(id, currentUser.value, venueChosen, name,
                     addRestaurantClicked = {controller.navigate("venue/0/$id")},
                     backClicked = {controller.navigate("my_events")},
                     restaurantInfo = {id: String -> controller.navigate("venueDetails/$id")})
             }
-            /*
-            composable("event/{id}"){
-                var event = Event("Mary birthday", emptyList(), emptyList())
-                EventView(event, {controller.navigate("venue/0")},
-                    {controller.navigate("my_events")})
-            }*/
             composable("venue/{num}/{eventID}") {
-                LaunchedEffect(key1 = Unit) {
-                    isLoading.value = true
-                    if(currentLocation != null) {
-                        restaurants.value =
-                            restaurantsService.get(
-                                currentLocation!!.latitude,
-                                currentLocation!!.longitude,
-                                maxRestNum,
-                                1000
-                            )
+                var locationEnabled = enabled.value
+                if(locationEnabled) {
+                    LaunchedEffect(key1 = Unit) {
+                        isLoading.value = true
+                        if (currentLocation != null) {
+                            restaurants.value =
+                                restaurantsService.get(
+                                    currentLocation!!.latitude,
+                                    currentLocation!!.longitude,
+                                    maxRestNum,
+                                    1000
+                                )
+                        }
+                        isLoading.value = false
                     }
-                    isLoading.value = false
-                }
-                if(isLoading.value == false) {
-                    var actualRestNum = restaurants.value.size
-                    val num = (it.arguments?.getString("num") ?: "0").toInt()
-                    val event = (it.arguments?.getString("eventID") ?: "0")
-                    val next: Int = (if (num < actualRestNum - 1) (num + 1) else 0)
-                    val prev: Int = (if (num > 0) (num - 1) else (actualRestNum - 1))
-                    val venueID = restaurants.value.get(num).id
-                    Log.v("Next", next.toString())
-                    Log.v("Prev", prev.toString())
-                    RestaurantInfo(restaurants.value.get(num),
-                        details = { controller.navigate("venueDetails/$venueID") },
-                        navigate = { controller.navigate("venue/$next/$event") },
-                        navigateBack = { controller.navigate("venue/$prev/$event") },
-                        check = {
-                            controller.navigate(
-                                "event_details/$event/${
-                                    restaurants.value.get(
-                                        num
-                                    ).id
-                                }/${
-                                    restaurants.value.get(
-                                        num
-                                    ).name
-                                }"
-                            )
-                        },
-                        backHandler = { controller.navigate("event_details/$event/0/0") })
+                    if (isLoading.value == false) {
+                        var actualRestNum = restaurants.value.size
+                        val num = (it.arguments?.getString("num") ?: "0").toInt()
+                        val event = (it.arguments?.getString("eventID") ?: "0")
+                        val next: Int = (if (num < actualRestNum - 1) (num + 1) else 0)
+                        val prev: Int = (if (num > 0) (num - 1) else (actualRestNum - 1))
+                        val venueID = restaurants.value.get(num).id
+                        Log.v("Next", next.toString())
+                        Log.v("Prev", prev.toString())
+                        RestaurantInfo(restaurants.value.get(num),
+                            details = { controller.navigate("venueDetails/$venueID") },
+                            navigate = { controller.navigate("venue/$next/$event") },
+                            navigateBack = { controller.navigate("venue/$prev/$event") },
+                            check = {
+                                controller.navigate(
+                                    "event_details/$event/${
+                                        restaurants.value.get(
+                                            num
+                                        ).id
+                                    }/${
+                                        restaurants.value.get(
+                                            num
+                                        ).name
+                                    }"
+                                )
+                            },
+                            backHandler = { controller.navigate("my_events") })
 
+                    }
+                }
+                else{
+                    Column() {
+                        Text("Turn on your location and run the application again", fontSize = 30.sp)
+                    }
                 }
             }
 
@@ -274,8 +255,4 @@ fun EventNavigation(mapsService: MapsService){
                 RestaurantDetailedInfo(id)
             }
         }
-    //}
-    //else{
-    //    Loader()
-    //}
 }

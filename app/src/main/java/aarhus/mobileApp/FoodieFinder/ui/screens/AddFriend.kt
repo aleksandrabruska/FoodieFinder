@@ -4,7 +4,6 @@ import aarhus.mobileApp.FoodieFinder.integration.firebase.auth.AuthService
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.UserFB
 import aarhus.mobileApp.FoodieFinder.integration.firebase.services.UserFBService
 import aarhus.mobileApp.FoodieFinder.ui.components.friends.SearchAndAddFriend
-import aarhus.mobileApp.FoodieFinder.ui.components.friends.UserDetails
 import aarhus.mobileApp.FoodieFinder.ui.scaffolding.BasicScaffold
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,21 +27,12 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun addFriend(currentUser: UserFB?, onBackClicked: () -> Unit) {
     val user = remember { mutableStateOf(currentUser) }
-    val authService = remember{ AuthService() }
-    val scope = rememberCoroutineScope()
 
-
-    /*
-    LaunchedEffect(key1 = Unit) {
-        // TODO HARD CODED
-        user.value = authService.logIn("ola@gmail.pl", "aaaaaaaa")
-    }
-*/
     BasicScaffold(sectionName = "Add a friend", backClicked = onBackClicked) {
         Column(modifier = Modifier.padding(50.dp).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.padding(40.dp))
             user.value?.let { user ->
-                SearchAndAddFriend(scope, user, onBackClicked)
+                SearchAndAddFriend(user, onBackClicked)
             }
 
 

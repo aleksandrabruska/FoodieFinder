@@ -1,4 +1,4 @@
-package aarhus.mobileApp.FoodieFinder.ui.components.events.restaurants
+package aarhus.mobileApp.FoodieFinder.integration.firebase
 
 import aarhus.mobileApp.FoodieFinder.integration.firebase.model.EventFB
 
